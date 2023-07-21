@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using StudentEmploymentPortalAPI.Dto;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 using System.Net;
@@ -12,10 +14,12 @@ namespace StudentEmploymentPortalAPI.Controllers
     public class JobPostsController : ControllerBase
     {
         private readonly IJobPostRepository _jobPostRepository;
+        private readonly IMapper _mapper;
 
-        public JobPostsController(IJobPostRepository jobPostRepository)
+        public JobPostsController(IJobPostRepository jobPostRepository, IMapper mapper)
         {
             _jobPostRepository = jobPostRepository;
+            _mapper = mapper;
         }
         // GET: api/JobPosts
         [HttpGet]
@@ -32,7 +36,9 @@ namespace StudentEmploymentPortalAPI.Controllers
                 return StatusCode((int)HttpStatusCode.NoContent);
             }
 
-            return Ok(posts);
+            var partialPosts = _mapper.Map<List<JobPostDto>>(posts);
+
+            return Ok(partialPosts);
         }
 
         /*// GET api/<JobPostsController>/5
