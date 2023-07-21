@@ -1,11 +1,19 @@
-﻿using StudentEmploymentPortalAPI.Data;
+﻿using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using StudentEmploymentPortalAPI.Data;
 using StudentEmploymentPortalAPI.Models;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 using System.Net;
+using System.Numerics;
 using System.Reflection;
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace StudentEmploymentPortalAPI
 {
@@ -396,13 +404,48 @@ namespace StudentEmploymentPortalAPI
                     context.Nationalities.Add(nationality);
                 }
             }
+            //EmployerType
+            IList<EmployerType> employerTypes = new List<EmployerType>
+                {
+                    new EmployerType {Name = "Internal"},
+                    new EmployerType {Name = "External"}
+            };
+            foreach (var type in employerTypes)
+            {
+                if (!context.EmployerTypes.Any(e => e.Name == type.Name))
+                {
+                    context.EmployerTypes.Add(type);
+                }
+            }
             //TODO: Status
+            IList<Status> statuses = new List<Status>
+                {
+                    new Status {Name = "Pending"},
+            };
+            foreach (var status in statuses)
+            {
+                if (!context.Statuses.Any(s => s.Name == status.Name))
+                {
+                    context.Statuses.Add(status);
+                }
+            }
             //TODO: ApplicationStatus
+            IList<ApplicationStatus> appStatuses = new List<ApplicationStatus>
+                {
+                    new ApplicationStatus {Name = "Pending"},
+            };
+            foreach (var appStatus in appStatuses)
+            {
+                if (!context.ApplicationStatuses.Any(s => s.Name == appStatus.Name))
+                {
+                    context.ApplicationStatuses.Add(appStatus);
+                }
+            }
             context.SaveChanges();
 
             //Student
             var sId = Guid.NewGuid();
-            var Student = new Student()
+            var student = new Student()
             {
                 Id = sId,
                 Address = "123 Fake Street, City, Country",
@@ -418,7 +461,7 @@ namespace StudentEmploymentPortalAPI
                 Achivements = "Won coding competition 2022",
                 Interests = "Reading, Swimming, Gaming",
             };
-            var Experiences = new List<Experience>
+            var experiences = new List<Experience>
             {
                 new Experience
                 {
@@ -430,7 +473,7 @@ namespace StudentEmploymentPortalAPI
                     TasksAndResponsibilities = "Developed and maintained software applications"
                 }
             };
-            var Qualifications = new List<Qualification>
+            var qualifications = new List<Qualification>
             {
                 new Qualification
                 {
@@ -445,7 +488,7 @@ namespace StudentEmploymentPortalAPI
                     Research = " Machine Learning in Healthcare"
                 }
             };
-            var Referees = new List<Referee>
+            var referees = new List<Referee>
             {
                 new Referee
                 {
@@ -457,11 +500,62 @@ namespace StudentEmploymentPortalAPI
                     Email = "john.doe@example.com"
                 }
             };
-            context.Experiences.AddRange(Experiences);
-            context.Qualifications.AddRange(Qualifications);
-            context.Referees.AddRange(Referees);
-            context.Students.Add(Student);
-            //TODO: JobPost
+            context.Experiences.AddRange(experiences);
+            context.Qualifications.AddRange(qualifications);
+            context.Referees.AddRange(referees);
+            context.Students.Add(student);
+            context.SaveChanges();
+            //Employer
+            var eId = Guid.NewGuid();
+            var employer = new Employer()
+            {
+                Id = eId,
+                Title = "Prof",
+                JobTitle = "Lecturer",
+                CompanyRegistrationNumber = "ABC123456",
+                BusinessName = "ABC Corp",
+                TradingName = "ABC Group",
+                RegisteredAddress = "123 Main Street, City, Country",
+                BusinessTypeId = 2,
+                StatusId = 1,
+                EmployerTypeId = 1,
+            };
+            context.Employers.Add(employer);
+
+            //JobPost
+            var post = new JobPost()
+            {
+                EmployerId = eId,
+                JobTitle = "Software Developer",
+                Location = "JHB CBD",
+                JobDescription = "We are looking for a skilled Software Developer to join our team.",
+                KeyResponsibilities = "Designing, coding, testing, and debugging software applications.|Collaborating with cross-functional teams to define and develop software solutions.",
+                JobTypeId = 1,
+                WeekHourId = 2,
+                StartDate = new DateTime(2024, 1, 1),
+                EndDate = new DateTime(2025, 1, 1),
+                ClosingDate = new DateTime(2023, 12, 1),
+                HourlyRate = 260.00M,
+                LimitedToSA = false,
+                LimitedTo1stYear = true,
+                LimitedTo2ndYear = true,
+                LimitedTo3rdYear = true,
+                LimitedToHonours = false,
+                LimitedToGraduate = false,
+                LimitedToMasters = false,
+                LimitedToPhd = false,
+                LimitedToPostdoc = false,
+                LimitedToDepartment = false,
+                LimitedToFaculty = false,
+                MinimumRequirements = "Bachelor's degree in Computer Science or related field. | Proficient in C#, ASP.NET, and SQL. | Strong problem-solving skills.",
+                ApplicationInstruction = "Please send your resume and cover letter to hr@abccorp.com.",
+                ContactPerson = "John Doe",
+                Email = "john.doe@abccorp.com",
+                ContactNumber = "0786532651",
+                ReviewerComment = null,
+                ApplicationStatusId = 1
+            };
+            context.JobPosts.Add(post);
 
             context.SaveChanges();
 

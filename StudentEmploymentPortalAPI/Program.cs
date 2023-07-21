@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudentEmploymentPortalAPI.Data;
+using StudentEmploymentPortalAPI.Interfaces;
+using StudentEmploymentPortalAPI.Repository;
 
 namespace StudentEmploymentPortalAPI
 {
@@ -13,6 +15,9 @@ namespace StudentEmploymentPortalAPI
 
             builder.Services.AddControllers();
             builder.Services.AddTransient<Seed>();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IJobPostRepository, JobPostRepository>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

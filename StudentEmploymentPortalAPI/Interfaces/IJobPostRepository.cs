@@ -2,8 +2,8 @@
 
 namespace StudentEmploymentPortalAPI.Interfaces
 {
-    public interface IStudentRepository
+    public interface IJobPostRepository
     {
-        ICollection<Student> GetStudents();
+        ICollection<JobPost> GetJobPosts();
     }
 }

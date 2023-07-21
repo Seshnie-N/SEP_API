@@ -51,7 +51,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployerType",
+                name: "EmployerTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -60,7 +60,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployerType", x => x.Id);
+                    table.PrimaryKey("PK_EmployerTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,9 +212,9 @@ namespace StudentEmploymentPortalAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Employers_EmployerType_EmployerTypeId",
+                        name: "FK_Employers_EmployerTypes_EmployerTypeId",
                         column: x => x.EmployerTypeId,
-                        principalTable: "EmployerType",
+                        principalTable: "EmployerTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -318,7 +318,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReviewerComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
                     ApplicationStatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -648,7 +647,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                 name: "BusinessTypes");
 
             migrationBuilder.DropTable(
-                name: "EmployerType");
+                name: "EmployerTypes");
 
             migrationBuilder.DropTable(
                 name: "Statuses");

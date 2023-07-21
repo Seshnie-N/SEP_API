@@ -12,7 +12,7 @@ using StudentEmploymentPortalAPI.Data;
 namespace StudentEmploymentPortalAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230720085456_InitCreate")]
+    [Migration("20230721064501_InitCreate")]
     partial class InitCreate
     {
         /// <inheritdoc />
@@ -276,9 +276,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
                     b.Property<int>("WeekHourId")
                         .HasColumnType("int");
 
@@ -416,7 +413,7 @@ namespace StudentEmploymentPortalAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmployerType");
+                    b.ToTable("EmployerTypes");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.Experience", b =>

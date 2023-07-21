@@ -41,7 +41,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         public string Email { get; set; }
         public string ContactNumber { get; set; }
         public string? ReviewerComment { get; set; }
-        public int StatusId { get; set; }
+        public int ApplicationStatusId { get; set; }
         [ValidateNever]
         public ApplicationStatus ApplicationStatus { get; set; }
         public ICollection<StudentApplication> Applications { get; set; }

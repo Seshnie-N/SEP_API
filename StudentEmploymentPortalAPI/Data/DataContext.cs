@@ -22,6 +22,7 @@ namespace StudentEmploymentPortalAPI.Data
         public DbSet<Faculty> Faculties { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<JobType> JobTypes { get; set; }
+        public DbSet<EmployerType> EmployerTypes { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
         public DbSet<WeekHour> WeekHours { get; set; }
         public DbSet<YearOfStudy> YearOfStudy { get; set; }
