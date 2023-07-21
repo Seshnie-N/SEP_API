@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace StudentEmploymentPortalAPI.Models.DomainModels
 {
     public class JobPost
     {
         public int Id { get; set; }
+        [JsonIgnore]
         public Guid EmployerId { get; set; }
         [ValidateNever]
         public Employer Employer { get; set; }

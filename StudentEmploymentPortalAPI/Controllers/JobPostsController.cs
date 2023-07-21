@@ -36,34 +36,31 @@ namespace StudentEmploymentPortalAPI.Controllers
                 return StatusCode((int)HttpStatusCode.NoContent);
             }
 
-            var partialPosts = _mapper.Map<List<JobPostDto>>(posts);
+            
 
-            return Ok(partialPosts);
+            return Ok(posts);
         }
 
-        /*// GET api/<JobPostsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET api/JobPosts/5
+        [HttpGet("{postId}")]
+        [ProducesResponseType(200, Type = typeof(JobPost))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public ActionResult Get(int postId)
         {
-            return "value";
+            var post = _jobPostRepository.GetJobPost(postId);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (post == null)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound);
+            }
+
+
+
+            return Ok(post);
         }
 
-        // POST api/<JobPostsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<JobPostsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<JobPostsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }*/
+        
     }
 }

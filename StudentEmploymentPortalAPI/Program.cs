@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using StudentEmploymentPortalAPI.Data;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Repository;
+using System.Text.Json.Serialization;
 
 namespace StudentEmploymentPortalAPI
 {
@@ -13,7 +14,10 @@ namespace StudentEmploymentPortalAPI
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            }); ;
             builder.Services.AddTransient<Seed>();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();

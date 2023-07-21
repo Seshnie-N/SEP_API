@@ -15,7 +15,28 @@ namespace StudentEmploymentPortalAPI.Repository
         }
         public ICollection<JobPost> GetJobPosts()
         {
-            return _context.JobPosts.Include(p => p.JobType).Include(p => p.Applications).Include(p => p.WeekHour).Include(p => p.ApplicationStatus).ToList();
+            return _context.JobPosts.Include(p => p.JobType)
+                .Include(p => p.Applications)
+                .Include(p => p.WeekHour)
+                .Include(p => p.ApplicationStatus)
+                .Include(p => p.Employer)
+                .ToList();
+        }
+
+        public JobPost GetJobPost(int postId)
+        {
+            return _context.JobPosts.Include(p => p.JobType)
+                .Include(p => p.Applications)
+                .Include(p => p.WeekHour)
+                .Include(p => p.ApplicationStatus)
+                .Include(p => p.Employer)
+                .Where(p => p.Id == postId)
+                .FirstOrDefault();
+        }
+
+        public bool JobPostExists(int postId)
+        {
+            return _context.JobPosts.Any(p => p.Id == postId);
         }
     }
 }
