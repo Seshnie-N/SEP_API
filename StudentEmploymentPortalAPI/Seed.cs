@@ -417,22 +417,46 @@ namespace StudentEmploymentPortalAPI
                     context.EmployerTypes.Add(type);
                 }
             }
-            //TODO: Status
-            IList<Status> statuses = new List<Status>
+            //TODO: EmployerStatus
+            IList<EmployerStatus> employerStatuses = new List<EmployerStatus>
                 {
-                    new Status {Name = "Pending"},
+                    new EmployerStatus {Name = "Pending"},
+                    new EmployerStatus {Name = "Approved"},
+                    new EmployerStatus {Name = "Rejected"},
             };
-            foreach (var status in statuses)
+            foreach (var status in employerStatuses)
             {
-                if (!context.Statuses.Any(s => s.Name == status.Name))
+                if (!context.EmployerStatuses.Any(s => s.Name == status.Name))
                 {
-                    context.Statuses.Add(status);
+                    context.EmployerStatuses.Add(status);
+                }
+            }
+            //TODO: JobPostStatus
+            IList<JobPostStatus> postStatuses = new List<JobPostStatus>
+                {
+                    new JobPostStatus {Name = "Pending"},
+                    new JobPostStatus {Name = "Approved"},
+                    new JobPostStatus {Name = "Rejected"},
+                    new JobPostStatus {Name = "Queried"},
+                    new JobPostStatus {Name = "Withdrawn"},
+            };
+            foreach (var status in postStatuses)
+            {
+                if (!context.JobPostStatuses.Any(s => s.Name == status.Name))
+                {
+                    context.JobPostStatuses.Add(status);
                 }
             }
             //TODO: ApplicationStatus
             IList<ApplicationStatus> appStatuses = new List<ApplicationStatus>
                 {
                     new ApplicationStatus {Name = "Pending"},
+                    new ApplicationStatus {Name = "On Hold"},
+                    new ApplicationStatus {Name = "Interview"},
+                    new ApplicationStatus {Name = "Appointed"},
+                    new ApplicationStatus {Name = "Incomplete"},
+                    new ApplicationStatus {Name = "Rejected"},
+                    new ApplicationStatus {Name = "Cancelled"},
             };
             foreach (var appStatus in appStatuses)
             {
@@ -517,7 +541,7 @@ namespace StudentEmploymentPortalAPI
                 TradingName = "ABC Group",
                 RegisteredAddress = "123 Main Street, City, Country",
                 BusinessTypeId = 2,
-                StatusId = 1,
+                EmployerStatusId = 1,
                 EmployerTypeId = 1,
             };
             context.Employers.Add(employer);
@@ -552,8 +576,9 @@ namespace StudentEmploymentPortalAPI
                 ContactPerson = "John Doe",
                 Email = "john.doe@abccorp.com",
                 ContactNumber = "0786532651",
-                ReviewerComment = null,
-                ApplicationStatusId = 1
+                ApproversComment = null,
+                IsApproved = true,
+                JobPostStatusId = 1
             };
             context.JobPosts.Add(post);
 

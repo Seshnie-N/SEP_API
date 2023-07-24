@@ -18,7 +18,7 @@ namespace StudentEmploymentPortalAPI.Repository
             return _context.JobPosts.Include(p => p.JobType)
                 .Include(p => p.Applications)
                 .Include(p => p.WeekHour)
-                .Include(p => p.ApplicationStatus)
+                .Include(p => p.JobPostStatus)
                 .Include(p => p.Employer)
                 .ToList();
         }
@@ -28,7 +28,7 @@ namespace StudentEmploymentPortalAPI.Repository
             return _context.JobPosts.Include(p => p.JobType)
                 .Include(p => p.Applications)
                 .Include(p => p.WeekHour)
-                .Include(p => p.ApplicationStatus)
+                .Include(p => p.JobPostStatus)
                 .Include(p => p.Employer)
                 .Where(p => p.Id == postId)
                 .FirstOrDefault();

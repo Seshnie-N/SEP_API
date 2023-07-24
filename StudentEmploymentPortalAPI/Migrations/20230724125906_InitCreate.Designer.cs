@@ -12,7 +12,7 @@ using StudentEmploymentPortalAPI.Data;
 namespace StudentEmploymentPortalAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230721064501_InitCreate")]
+    [Migration("20230724125906_InitCreate")]
     partial class InitCreate
     {
         /// <inheritdoc />
@@ -142,6 +142,9 @@ namespace StudentEmploymentPortalAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EmployerStatusId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EmployerTypeId")
                         .HasColumnType("int");
 
@@ -152,9 +155,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                     b.Property<string>("RegisteredAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -167,9 +167,9 @@ namespace StudentEmploymentPortalAPI.Migrations
 
                     b.HasIndex("BusinessTypeId");
 
-                    b.HasIndex("EmployerTypeId");
+                    b.HasIndex("EmployerStatusId");
 
-                    b.HasIndex("StatusId");
+                    b.HasIndex("EmployerTypeId");
 
                     b.ToTable("Employers");
                 });
@@ -186,8 +186,8 @@ namespace StudentEmploymentPortalAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ApplicationStatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("ApproversComment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ClosingDate")
                         .HasColumnType("datetime2");
@@ -214,9 +214,15 @@ namespace StudentEmploymentPortalAPI.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<string>("JobDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("JobPostStatusId")
+                        .HasColumnType("int");
 
                     b.Property<string>("JobTitle")
                         .IsRequired()
@@ -270,9 +276,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReviewerComment")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -281,9 +284,9 @@ namespace StudentEmploymentPortalAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationStatusId");
-
                     b.HasIndex("EmployerId");
+
+                    b.HasIndex("JobPostStatusId");
 
                     b.HasIndex("JobTypeId");
 
@@ -365,9 +368,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                     b.Property<int>("JobPostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StatusId")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
@@ -397,6 +397,23 @@ namespace StudentEmploymentPortalAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DriversLicenses");
+                });
+
+            modelBuilder.Entity("StudentEmploymentPortalAPI.Models.EmployerStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployerStatuses");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.EmployerType", b =>
@@ -484,6 +501,23 @@ namespace StudentEmploymentPortalAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genders");
+                });
+
+            modelBuilder.Entity("StudentEmploymentPortalAPI.Models.JobPostStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("JobPostStatuses");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.JobType", b =>
@@ -623,23 +657,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                     b.ToTable("Referees");
                 });
 
-            modelBuilder.Entity("StudentEmploymentPortalAPI.Models.Status", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Statuses");
-                });
-
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.WeekHour", b =>
                 {
                     b.Property<int>("Id")
@@ -704,36 +721,36 @@ namespace StudentEmploymentPortalAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("StudentEmploymentPortalAPI.Models.EmployerStatus", "EmployerStatus")
+                        .WithMany()
+                        .HasForeignKey("EmployerStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("StudentEmploymentPortalAPI.Models.EmployerType", "EmployerType")
                         .WithMany()
                         .HasForeignKey("EmployerTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StudentEmploymentPortalAPI.Models.Status", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("BusinessType");
 
-                    b.Navigation("EmployerType");
+                    b.Navigation("EmployerStatus");
 
-                    b.Navigation("Status");
+                    b.Navigation("EmployerType");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.DomainModels.JobPost", b =>
                 {
-                    b.HasOne("StudentEmploymentPortalAPI.Models.ApplicationStatus", "ApplicationStatus")
-                        .WithMany()
-                        .HasForeignKey("ApplicationStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Employer", "Employer")
                         .WithMany("JobPosts")
                         .HasForeignKey("EmployerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StudentEmploymentPortalAPI.Models.JobPostStatus", "JobPostStatus")
+                        .WithMany()
+                        .HasForeignKey("JobPostStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -749,9 +766,9 @@ namespace StudentEmploymentPortalAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicationStatus");
-
                     b.Navigation("Employer");
+
+                    b.Navigation("JobPostStatus");
 
                     b.Navigation("JobType");
 

@@ -12,7 +12,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         [ValidateNever]
         public JobPost JobPost { get; set; }
 
-        public int? StatusId { get; set; }
+        public int? ApplicationStatusId { get; set; }
         [ValidateNever]
         public ApplicationStatus? ApplicationStatus { get; set; }
         [ValidateNever]

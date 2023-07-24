@@ -26,7 +26,8 @@ namespace StudentEmploymentPortalAPI.Data
         public DbSet<Nationality> Nationalities { get; set; }
         public DbSet<WeekHour> WeekHours { get; set; }
         public DbSet<YearOfStudy> YearOfStudy { get; set; }
-        public DbSet<Status> Statuses { get; set; }
+        public DbSet<EmployerStatus> EmployerStatuses { get; set; }
+        public DbSet<JobPostStatus> JobPostStatuses { get; set; }
         public DbSet<ApplicationStatus> ApplicationStatuses { get; set; }
         public DbSet<DriversLicense> DriversLicenses { get; set; }
         public DbSet<Race> Races { get; set; }

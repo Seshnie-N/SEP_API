@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Eventing.Reader;
 using System.Text.Json.Serialization;
 
 namespace StudentEmploymentPortalAPI.Models.DomainModels
@@ -42,10 +43,11 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         public string ContactPerson { get; set; }
         public string Email { get; set; }
         public string ContactNumber { get; set; }
-        public string? ReviewerComment { get; set; }
-        public int ApplicationStatusId { get; set; }
+        public string? ApproversComment { get; set; }
+        public bool IsApproved { get; set; } 
+        public int JobPostStatusId { get; set; }
         [ValidateNever]
-        public ApplicationStatus ApplicationStatus { get; set; }
+        public JobPostStatus JobPostStatus { get; set; }
         public ICollection<StudentApplication> Applications { get; set; }
     }
 }

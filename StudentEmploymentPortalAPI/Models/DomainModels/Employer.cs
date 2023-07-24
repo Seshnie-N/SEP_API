@@ -17,9 +17,9 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         public int BusinessTypeId { get; set; }
         [ValidateNever]
         public BusinessType BusinessType { get; set; }
-        public int StatusId { get; set; }
+        public int EmployerStatusId { get; set; }
         [ValidateNever]
-        public Status Status { get; set; }
+        public EmployerStatus EmployerStatus { get; set; }
         public int EmployerTypeId { get; set; }
         [ValidateNever]
         public EmployerType EmployerType { get; set; }

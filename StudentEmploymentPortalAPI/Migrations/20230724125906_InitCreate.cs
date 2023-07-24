@@ -51,6 +51,19 @@ namespace StudentEmploymentPortalAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmployerStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployerStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployerTypes",
                 columns: table => new
                 {
@@ -87,6 +100,19 @@ namespace StudentEmploymentPortalAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobPostStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobPostStatuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,19 +155,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Statuses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Statuses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "WeekHours",
                 columns: table => new
                 {
@@ -168,6 +181,44 @@ namespace StudentEmploymentPortalAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Employers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CompanyRegistrationNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BusinessName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TradingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegisteredAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BusinessTypeId = table.Column<int>(type: "int", nullable: false),
+                    EmployerStatusId = table.Column<int>(type: "int", nullable: false),
+                    EmployerTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employers_BusinessTypes_BusinessTypeId",
+                        column: x => x.BusinessTypeId,
+                        principalTable: "BusinessTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employers_EmployerStatuses_EmployerStatusId",
+                        column: x => x.EmployerStatusId,
+                        principalTable: "EmployerStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employers_EmployerTypes_EmployerTypeId",
+                        column: x => x.EmployerTypeId,
+                        principalTable: "EmployerTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Departments",
                 columns: table => new
                 {
@@ -188,39 +239,67 @@ namespace StudentEmploymentPortalAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employers",
+                name: "JobPosts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyRegistrationNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BusinessName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TradingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RegisteredAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BusinessTypeId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
-                    EmployerTypeId = table.Column<int>(type: "int", nullable: false)
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JobDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KeyResponsibilities = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JobTypeId = table.Column<int>(type: "int", nullable: false),
+                    WeekHourId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ClosingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HourlyRate = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    LimitedToSA = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedTo1stYear = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedTo2ndYear = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedTo3rdYear = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedToHonours = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedToGraduate = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedToMasters = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedToPhd = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedToPostdoc = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedToDepartment = table.Column<bool>(type: "bit", nullable: false),
+                    LimitedToFaculty = table.Column<bool>(type: "bit", nullable: false),
+                    MinimumRequirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApplicationInstruction = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactPerson = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApproversComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false),
+                    JobPostStatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employers", x => x.Id);
+                    table.PrimaryKey("PK_JobPosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employers_BusinessTypes_BusinessTypeId",
-                        column: x => x.BusinessTypeId,
-                        principalTable: "BusinessTypes",
+                        name: "FK_JobPosts_Employers_EmployerId",
+                        column: x => x.EmployerId,
+                        principalTable: "Employers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Employers_EmployerTypes_EmployerTypeId",
-                        column: x => x.EmployerTypeId,
-                        principalTable: "EmployerTypes",
+                        name: "FK_JobPosts_JobPostStatuses_JobPostStatusId",
+                        column: x => x.JobPostStatusId,
+                        principalTable: "JobPostStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Employers_Statuses_StatusId",
-                        column: x => x.StatusId,
-                        principalTable: "Statuses",
+                        name: "FK_JobPosts_JobTypes_JobTypeId",
+                        column: x => x.JobTypeId,
+                        principalTable: "JobTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobPosts_WeekHours_WeekHourId",
+                        column: x => x.WeekHourId,
+                        principalTable: "WeekHours",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -285,66 +364,33 @@ namespace StudentEmploymentPortalAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobPosts",
+                name: "Applications",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JobDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KeyResponsibilities = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JobTypeId = table.Column<int>(type: "int", nullable: false),
-                    WeekHourId = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClosingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    HourlyRate = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    LimitedToSA = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedTo1stYear = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedTo2ndYear = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedTo3rdYear = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedToHonours = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedToGraduate = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedToMasters = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedToPhd = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedToPostdoc = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedToDepartment = table.Column<bool>(type: "bit", nullable: false),
-                    LimitedToFaculty = table.Column<bool>(type: "bit", nullable: false),
-                    MinimumRequirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApplicationInstruction = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactPerson = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReviewerComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApplicationStatusId = table.Column<int>(type: "int", nullable: false)
+                    StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    JobPostId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationStatusId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobPosts", x => x.Id);
+                    table.PrimaryKey("PK_Applications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_JobPosts_ApplicationStatuses_ApplicationStatusId",
+                        name: "FK_Applications_ApplicationStatuses_ApplicationStatusId",
                         column: x => x.ApplicationStatusId,
                         principalTable: "ApplicationStatuses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Applications_JobPosts_JobPostId",
+                        column: x => x.JobPostId,
+                        principalTable: "JobPosts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_JobPosts_Employers_EmployerId",
-                        column: x => x.EmployerId,
-                        principalTable: "Employers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_JobPosts_JobTypes_JobTypeId",
-                        column: x => x.JobTypeId,
-                        principalTable: "JobTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_JobPosts_WeekHours_WeekHourId",
-                        column: x => x.WeekHourId,
-                        principalTable: "WeekHours",
+                        name: "FK_Applications_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -425,39 +471,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Applications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    JobPostId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: true),
-                    ApplicationStatusId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Applications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Applications_ApplicationStatuses_ApplicationStatusId",
-                        column: x => x.ApplicationStatusId,
-                        principalTable: "ApplicationStatuses",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Applications_JobPosts_JobPostId",
-                        column: x => x.JobPostId,
-                        principalTable: "JobPosts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Applications_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ApplicationDocument",
                 columns: table => new
                 {
@@ -514,14 +527,14 @@ namespace StudentEmploymentPortalAPI.Migrations
                 column: "BusinessTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employers_EmployerStatusId",
+                table: "Employers",
+                column: "EmployerStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employers_EmployerTypeId",
                 table: "Employers",
                 column: "EmployerTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employers_StatusId",
-                table: "Employers",
-                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Experiences_StudentId",
@@ -529,14 +542,14 @@ namespace StudentEmploymentPortalAPI.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobPosts_ApplicationStatusId",
-                table: "JobPosts",
-                column: "ApplicationStatusId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_JobPosts_EmployerId",
                 table: "JobPosts",
                 column: "EmployerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobPosts_JobPostStatusId",
+                table: "JobPosts",
+                column: "JobPostStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_JobPosts_JobTypeId",
@@ -608,16 +621,19 @@ namespace StudentEmploymentPortalAPI.Migrations
                 name: "Applications");
 
             migrationBuilder.DropTable(
+                name: "ApplicationStatuses");
+
+            migrationBuilder.DropTable(
                 name: "JobPosts");
 
             migrationBuilder.DropTable(
                 name: "Students");
 
             migrationBuilder.DropTable(
-                name: "ApplicationStatuses");
+                name: "Employers");
 
             migrationBuilder.DropTable(
-                name: "Employers");
+                name: "JobPostStatuses");
 
             migrationBuilder.DropTable(
                 name: "JobTypes");
@@ -647,10 +663,10 @@ namespace StudentEmploymentPortalAPI.Migrations
                 name: "BusinessTypes");
 
             migrationBuilder.DropTable(
-                name: "EmployerTypes");
+                name: "EmployerStatuses");
 
             migrationBuilder.DropTable(
-                name: "Statuses");
+                name: "EmployerTypes");
 
             migrationBuilder.DropTable(
                 name: "Faculties");
