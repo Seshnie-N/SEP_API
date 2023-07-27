@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 using StudentEmploymentPortalAPI.Data;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
+using StudentEmploymentPortalAPI.Dto;
 
 namespace StudentEmploymentPortalAPI.Repository
 {
