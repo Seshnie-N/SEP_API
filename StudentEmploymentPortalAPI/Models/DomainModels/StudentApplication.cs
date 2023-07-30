@@ -6,7 +6,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
     {
         public int Id { get; set; }
         [ValidateNever]
-        public Student Student { get; set; }
+        public Guid StudentId { get; set; }
 
         public int JobPostId { get; set; }
         [ValidateNever]

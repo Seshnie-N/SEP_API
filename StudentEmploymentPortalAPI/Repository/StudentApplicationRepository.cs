@@ -12,6 +12,10 @@ namespace StudentEmploymentPortalAPI.Repository
         {
             _context = context;
         }
+        public ICollection<StudentApplication> GetApplications()
+        {
+            return _context.Applications.ToList();
+        }
         public bool CreateApplication(StudentApplication application)
         {
             _context.Add(application);

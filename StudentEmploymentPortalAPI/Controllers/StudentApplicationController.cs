@@ -33,14 +33,36 @@ namespace StudentEmploymentPortalAPI.Controllers
             return Ok(categories);
         }*/
         
-        [HttpPost]
+        [HttpPost] 
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateApplication([FromBody] ApplicationDto applicationDto)
         {
             if (applicationDto == null)
                 return BadRequest();
-            var application = 
+
+            var category = _applicationRepository.GetApplications()
+                .Where(c => c.JobPostId == applicationDto.JobPostId && c.StudentId == applicationDto.StudentId)
+                .FirstOrDefault();
+
+            if (category != null)
+            {
+                ModelState.AddModelError("", "Application already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var applicationMap = _mapper.Map<StudentApplication>(applicationDto);
+
+            if (!_applicationRepository.CreateApplication(applicationMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }
