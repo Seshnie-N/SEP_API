@@ -32,7 +32,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         public ICollection<Experience> Experiences { set; get; }
         public ICollection<Qualification> Qualifications { set; get; }
         public ICollection<Referee> Referees { set; get;}
-        public ICollection<StudentApplication> StudentApplications { set; get; }
+   
 
     }
 }

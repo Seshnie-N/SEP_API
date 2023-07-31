@@ -836,7 +836,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", "Student")
-                        .WithMany("StudentApplications")
+                        .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -850,35 +850,29 @@ namespace StudentEmploymentPortalAPI.Migrations
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.Experience", b =>
                 {
-                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", "Student")
+                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", null)
                         .WithMany("Experiences")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.Qualification", b =>
                 {
-                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", "Student")
+                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", null)
                         .WithMany("Qualifications")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.Referee", b =>
                 {
-                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", "Student")
+                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", null)
                         .WithMany("Referees")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.DomainModels.Employer", b =>
@@ -898,8 +892,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                     b.Navigation("Qualifications");
 
                     b.Navigation("Referees");
-
-                    b.Navigation("StudentApplications");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.DomainModels.StudentApplication", b =>

@@ -8,7 +8,7 @@ namespace StudentEmploymentPortalAPI.Models
         public int Id { get; set; }
         public Guid StudentId { get; set; }
         [ValidateNever]
-        public Student Student { get; set; }
+     //   public Student Student { get; set; }
         public string Institution { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
