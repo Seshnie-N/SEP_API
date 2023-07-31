@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentEmploymentPortalAPI.Interfaces;
+using StudentEmploymentPortalAPI.Models;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 
 namespace StudentEmploymentPortalAPI.Controllers
@@ -51,5 +52,58 @@ namespace StudentEmploymentPortalAPI.Controllers
 
             return Ok(student);
         }
+        // POST: api/Students/AddReferee/{studentId}
+        [HttpPost("{studentId}/AddReferee")]
+        [ProducesResponseType(201, Type = typeof(Referee))]
+        [ProducesResponseType(400)]
+        public IActionResult AddReferee(Guid studentId, Referee referee)
+        {
+            try
+            {
+                _studentRepository.AddReferee(studentId, referee);
+                return CreatedAtAction(nameof(GetById), new { id = studentId }, referee);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        // POST: api/Students/AddQualification/{studentId}
+        [HttpPost("{studentId}/AddQualification")]
+        [ProducesResponseType(201, Type = typeof(Qualification))]
+        [ProducesResponseType(400)]
+        public IActionResult AddQualification(Guid studentId, Qualification qualification)
+        {
+            try
+            {
+                _studentRepository.AddQualification(studentId, qualification);
+                return CreatedAtAction(nameof(GetById), new { id = studentId }, qualification);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST: api/Students/AddExperience/{studentId}
+        [HttpPost("{studentId}/AddExperience")]
+        [ProducesResponseType(201, Type = typeof(Experience))]
+        [ProducesResponseType(400)]
+        public IActionResult AddExperience(Guid studentId, Experience experience)
+        {
+            try
+            {
+                _studentRepository.AddExperience(studentId, experience);
+                return CreatedAtAction(nameof(GetById), new { id = studentId }, experience);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

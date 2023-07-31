@@ -1,4 +1,5 @@
-﻿using StudentEmploymentPortalAPI.Models.DomainModels;
+﻿using StudentEmploymentPortalAPI.Models;
+using StudentEmploymentPortalAPI.Models.DomainModels;
 
 namespace StudentEmploymentPortalAPI.Interfaces
 {
@@ -9,5 +10,8 @@ namespace StudentEmploymentPortalAPI.Interfaces
 
         void AddStudent(Student student);
         void SaveChanges();
+        void AddReferee(Guid studentId, Referee referee);
+        void AddQualification(Guid studentId, Qualification qualification);
+        void AddExperience(Guid studentId, Experience experience);
     }
 }
