@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using StudentEmploymentPortalAPI.Models;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 
 namespace StudentEmploymentPortalAPI.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<ApplicationUser>
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         //Domain Model DbSets
         public DbSet<Student> Students { get; set; }
         public DbSet<Qualification> Qualifications { get; set; }
@@ -31,6 +31,7 @@ namespace StudentEmploymentPortalAPI.Data
         public DbSet<ApplicationStatus> ApplicationStatuses { get; set; }
         public DbSet<DriversLicense> DriversLicenses { get; set; }
         public DbSet<Race> Races { get; set; }
+        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

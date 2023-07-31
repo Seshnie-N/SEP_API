@@ -1,32 +1,18 @@
-﻿using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Identity;
 using StudentEmploymentPortalAPI.Data;
 using StudentEmploymentPortalAPI.Models;
 using StudentEmploymentPortalAPI.Models.DomainModels;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
-using System.Net;
-using System.Numerics;
-using System.Reflection;
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace StudentEmploymentPortalAPI
+namespace SEP.Data
 {
-    public class Seed
+    public static class TaskInitializer
     {
-        private readonly DataContext context;
-        public Seed(DataContext context)
+        public static async Task<WebApplication> SeedDataAsync(this WebApplication app)
         {
-            this.context = context;
-        }
-        public void SeedDataContext()
-        {
-            //Facultiess
+            using var scope = app.Services.CreateScope();
+            using var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+            //Faculties
             IList<Faculty> faculties = new List<Faculty>
                 {
                     new Faculty { Name = "Commerce, Law and Management" }, //1
@@ -201,7 +187,8 @@ namespace StudentEmploymentPortalAPI
             }
             //Nationality
             IList<Nationality> nationalities = new List<Nationality>
-        {
+            {
+            new Nationality {Name = "Unspecified"},
             new Nationality { Name = "Afghan" },
             new Nationality { Name = "Albanian" },
             new Nationality { Name = "Algerian" },
@@ -417,7 +404,7 @@ namespace StudentEmploymentPortalAPI
                     context.EmployerTypes.Add(type);
                 }
             }
-            //TODO: EmployerStatus
+            //EmployerStatus
             IList<EmployerStatus> employerStatuses = new List<EmployerStatus>
                 {
                     new EmployerStatus {Name = "Pending"},
@@ -431,7 +418,7 @@ namespace StudentEmploymentPortalAPI
                     context.EmployerStatuses.Add(status);
                 }
             }
-            //TODO: JobPostStatus
+            //JobPostStatus
             IList<JobPostStatus> postStatuses = new List<JobPostStatus>
                 {
                     new JobPostStatus {Name = "Pending"},
@@ -447,7 +434,7 @@ namespace StudentEmploymentPortalAPI
                     context.JobPostStatuses.Add(status);
                 }
             }
-            //TODO: ApplicationStatus
+            //ApplicationStatus
             IList<ApplicationStatus> appStatuses = new List<ApplicationStatus>
                 {
                     new ApplicationStatus {Name = "Pending"},
@@ -467,69 +454,96 @@ namespace StudentEmploymentPortalAPI
             }
             context.SaveChanges();
 
-            //Student
-            var sId = Guid.NewGuid();
-            var student = new Student()
+            using var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+            using var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            //Roles
+            await roleManager.CreateAsync(new IdentityRole("Admin"));
+            await roleManager.CreateAsync(new IdentityRole("User"));
+
+            //default student
+            if (userManager.FindByEmailAsync("student@sep.com").Result == null)
             {
-                Id = sId,
-                Address = "123 Fake Street, City, Country",
-                IdNumber = "0001010299081",
-                DriversLicenseId = 1,
-                CareerObjective = "To obtain a challenging position in the IT industry.",
-                GenderId = 1,
-                RaceId = 2,
-                NationalityId = 3,
-                YearOfStudyId = 4,
-                DepartmentId = 5,
-                Skills = "C#, Java, HTML, CSS",
-                Achivements = "Won coding competition 2022",
-                Interests = "Reading, Swimming, Gaming",
-            };
-            var experiences = new List<Experience>
-            {
-                new Experience
+                var user = new ApplicationUser()
                 {
-                    StudentId = sId,
-                    EmployerName = "TechCorp",
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Today.AddDays(30),
-                    JobTitle = "Software Developer",
-                    TasksAndResponsibilities = "Developed and maintained software applications"
-                }
-            };
-            var qualifications = new List<Qualification>
-            {
-                new Qualification
+                    Email = "student@sep.com",
+                    UserName = "student@sep.com",
+                    FirstName = "Tester",
+                    LastName = "one",
+                    PhoneNumber = "0763253214",
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                };
+                var result = await userManager.CreateAsync(user, "Pa$$w)ord1.");
+                if (result.Succeeded)
                 {
-                    StudentId = sId,
-                    Institution = "ABC University",
-                    StartDate = new DateTime(1995, 1, 1),
-                    EndDate = new DateTime(2000, 1, 1),
-                    QualificationTitle = "Bachelor of Science in Computer Science",
-                    Subjects = "Computer Programming, Data Structures, Algorithms",
-                    Majors = "Software Engineering",
-                    SubMajors = "Data Science",
-                    Research = " Machine Learning in Healthcare"
+                    userManager.AddToRoleAsync(user, "User").Wait();
+                    var studentId = await userManager.GetUserIdAsync(user);
+                    var student = new Student
+                    {
+                        UserId = studentId,
+                        Address = "123 Fake Street, City, Country",
+                        IdNumber = "0001010299081",
+                        DriversLicenseId = 1,
+                        CareerObjective = "To obtain a challenging position in the IT industry.",
+                        GenderId = 1,
+                        RaceId = 2,
+                        NationalityId = 3,
+                        IsSouthAfrican = true,
+                        YearOfStudyId = 1,
+                        DepartmentId = 5,
+                        Skills = "C#, Java, HTML, CSS",
+                        Achivements = "Won coding competition 2022",
+                        Interests = "Reading, Swimming, Gaming",
+                    };
+                    var experiences = new List<Experience>
+                    {
+                        new Experience
+                        {
+                            StudentId = studentId,
+                            EmployerName = "TechCorp",
+                            StartDate = DateTime.Now,
+                            EndDate = DateTime.Today.AddDays(30),
+                            JobTitle = "Software Developer",
+                            TasksAndResponsibilities = "Developed and maintained software applications"
+                        }
+                    };
+                    var qualifications = new List<Qualification>
+                    {
+                        new Qualification
+                        {
+                            StudentId = studentId,
+                            Institution = "ABC University",
+                            StartDate = new DateTime(1995, 1, 1),
+                            EndDate = new DateTime(2000, 1, 1),
+                            QualificationTitle = "Bachelor of Science in Computer Science",
+                            Subjects = "Computer Programming, Data Structures, Algorithms",
+                            Majors = "Software Engineering",
+                            SubMajors = "Data Science",
+                            Research = " Machine Learning in Healthcare"
+                        }
+                    };
+                    var referees = new List<Referee>
+                    {
+                        new Referee
+                        {
+                            StudentId = studentId,
+                            Name = "John Doe",
+                            JobTitle = "Project Manager",
+                            Insitution = "XYZ Solutions",
+                            Cell = "0763263526",
+                            Email = "john.doe@example.com"
+                        }
+                    };
+                    context.Experiences.AddRange(experiences);
+                    context.Qualifications.AddRange(qualifications);
+                    context.Referees.AddRange(referees);
+                    context.Students.Add(student);
+                    context.SaveChanges();
                 }
-            };
-            var referees = new List<Referee>
-            {
-                new Referee
-                {
-                    StudentId = sId,
-                    Name = "John Doe",
-                    JobTitle = "Project Manager",
-                    Insitution = "XYZ Solutions",
-                    Cell = "0763263526",
-                    Email = "john.doe@example.com"
-                }
-            };
-            context.Experiences.AddRange(experiences);
-            context.Qualifications.AddRange(qualifications);
-            context.Referees.AddRange(referees);
-            context.Students.Add(student);
-            context.SaveChanges();
-            //Employer
+            }
+
+            /*//Employer
             var eId = Guid.NewGuid();
             var employer = new Employer()
             {
@@ -550,7 +564,7 @@ namespace StudentEmploymentPortalAPI
             var post = new JobPost()
             {
                 EmployerId = eId,
-                JobTitle = "Software Developer",
+                JobTitle = "Developer",
                 Location = "JHB CBD",
                 JobDescription = "We are looking for a skilled Software Developer to join our team.",
                 KeyResponsibilities = "Designing, coding, testing, and debugging software applications.|Collaborating with cross-functional teams to define and develop software solutions.",
@@ -582,8 +596,9 @@ namespace StudentEmploymentPortalAPI
             };
             context.JobPosts.Add(post);
 
-            context.SaveChanges();
+            context.SaveChanges();*/
 
+            return app;
         }
     }
 }

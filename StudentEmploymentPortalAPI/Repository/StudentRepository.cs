@@ -16,7 +16,24 @@ namespace StudentEmploymentPortalAPI.Repository
 
         public ICollection<Student> GetStudents()
         {
-            return _context.Students.Include("DriversLicense").ToList();
+            return _context.Students.Include("DriversLicense")
+                .Include("Gender")
+                .Include("Race")
+                .Include("Nationality")
+                .Include("YearOfStudy")
+                .Include("Department")
+                .ToList();
+        }
+
+        public Student GetStudent(string userId)
+        {
+            return _context.Students.Where(s => s.UserId == userId).Include("DriversLicense")
+                .Include("Gender")
+                .Include("Race")
+                .Include("Nationality")
+                .Include("YearOfStudy")
+                .Include("Department")
+                .FirstOrDefault();
         }
     }
 }

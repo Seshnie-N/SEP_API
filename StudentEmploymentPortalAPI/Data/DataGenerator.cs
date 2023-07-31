@@ -1,13 +1,13 @@
 ﻿using Bogus;
 using StudentEmploymentPortalAPI.Data;
+using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 
 namespace SEP.Data
 {
     public class DataGenerator
     {
-        Faker<JobPost> postFake;
-        public DataGenerator(DataContext context) 
+        public DataGenerator(DataContext context, ILookupRepository lookupRepository) 
         {
             /*var employers = context.Employers.Where(e => e.IsApproved).Select(e => e.UserId).ToList();
             var faculties = context.Faculties.Select(f => f.FacultyId).ToList();
@@ -16,7 +16,14 @@ namespace SEP.Data
             var statusList = new List<string> {"Pending", "Approved", "Rejected", "Queried" };
             var postStatusList = new List<string> { "Approved", "Withdrawn", "Closed" };*/
 
+
             Randomizer.Seed = new Random(1969);
+
+            /*employerFake = new Faker<Employer>()
+                .RuleFor(e => e.Id, f => f.Random.Guid());*/
+
+
+
             /*postFake = new Faker<Post>()
                 .RuleFor(p => p.PostId, f => f.Random.Guid())
                 .RuleFor(p => p.EmployerId, f => f.PickRandom(employers))
@@ -57,9 +64,5 @@ namespace SEP.Data
                 .RuleFor(p => p.LimitedToFaculty, f => f.Random.Bool());*/
         }  
 
-        /*public IEnumerable<JobPost> GeneratePosts()
-        {
-            return postFake.GenerateForever();
-        }*/
     }
 }

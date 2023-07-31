@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentEmploymentPortalAPI.Dto;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 using System.Net;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Security.Claims;
 
 namespace StudentEmploymentPortalAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class JobPostsController : ControllerBase
     {
         private readonly IJobPostRepository _jobPostRepository;
@@ -25,18 +26,15 @@ namespace StudentEmploymentPortalAPI.Controllers
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<JobPost>))]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public ActionResult GetJobPosts()
+        public async Task<ActionResult> GetJobPosts()
         {
-            var posts = _jobPostRepository.GetJobPosts();
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var posts = await _jobPostRepository.GetJobPostsAsync(userId);
 
             if (posts.Count == 0)
             {
                 return StatusCode((int)HttpStatusCode.NoContent);
             }
-
-            
 
             return Ok(posts);
         }
@@ -45,7 +43,7 @@ namespace StudentEmploymentPortalAPI.Controllers
         [HttpGet("{postId}")]
         [ProducesResponseType(200, Type = typeof(JobPost))]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public ActionResult Get(int postId)
+        public ActionResult GetJobPost(int postId)
         {
             var post = _jobPostRepository.GetJobPost(postId);
             if (!ModelState.IsValid)
@@ -55,8 +53,6 @@ namespace StudentEmploymentPortalAPI.Controllers
             {
                 return StatusCode((int)HttpStatusCode.NotFound);
             }
-
-
 
             return Ok(post);
         }

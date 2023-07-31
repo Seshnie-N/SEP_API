@@ -1,11 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentEmploymentPortalAPI.Models.DomainModels
 {
-    public class Student
+    [Table("Students")]
+    public class Student 
     {
-        public Guid Id { get; set; }
+        [Key, ForeignKey(nameof(User))]
+        public string UserId { get; set; }
+        [ValidateNever]
+        public virtual ApplicationUser User { get; set; }
         public string? Address { set; get; }
+        [Required(ErrorMessage = "Please enter your ID number")]
+        [DisplayName("ID Number")]
+        [RegularExpression("(([0-9]{2})(0|1)([0-9])([0-3])([0-9]))([ ]?)(([ 0-9]{4})([ ]?)([ 0-1][8]([ ]?)[ 0-9]))", ErrorMessage = "Invalid ID number")]
         public string? IdNumber { set; get; }
         public int DriversLicenseId { get; set; }
         [ValidateNever]
@@ -17,6 +27,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         public int RaceId { get; set; }
         [ValidateNever]
         public Race? Race { set; get; }
+        public bool IsSouthAfrican { get; set; }
         public int NationalityId { get; set; }
         [ValidateNever]
         public Nationality? Nationality { set; get; }
