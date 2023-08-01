@@ -53,7 +53,7 @@ namespace StudentEmploymentPortalAPI.Controllers
             return Ok(student);
         }
         // POST: api/Students/AddReferee/{studentId}
-        [HttpPost("{studentId}/AddReferee")]
+        [HttpPost("AddReferee/{studentId}")]
         [ProducesResponseType(201, Type = typeof(Referee))]
         [ProducesResponseType(400)]
         public IActionResult AddReferee(Guid studentId, Referee referee)
@@ -97,6 +97,57 @@ namespace StudentEmploymentPortalAPI.Controllers
             {
                 _studentRepository.AddExperience(studentId, experience);
                 return CreatedAtAction(nameof(GetById), new { id = studentId }, experience);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //PUT: api/Students/UpdateReferee/{studentID}/{refereeId}
+        [HttpPut("{studentId}/UpdateReferee/{refereeId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateReferee(Guid studentId,int Id,Referee referee)
+        {
+            try
+            {
+                _studentRepository.UpdateReferee(studentId, Id, referee);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: api/Students/UpdateQualification/{studentId}/{qualificationId}
+        [HttpPut("{studentId}/UpdateQualification/{qualificationId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateQualification(Guid studentId, int Id, Qualification qualification)
+        {
+            try
+            {
+                _studentRepository.UpdateQualification(studentId, Id, qualification);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: api/Students/UpdateExperience/{studentId}/{experienceId}
+        [HttpPut("{studentId}/UpdateExperience/{Id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateExperience(Guid studentId, int Id, Experience experience)
+        {
+            try
+            {
+                _studentRepository.UpdateExperience(studentId, Id, experience);
+                return NoContent();
             }
             catch (ArgumentException ex)
             {

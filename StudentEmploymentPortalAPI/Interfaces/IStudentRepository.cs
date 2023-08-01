@@ -11,7 +11,12 @@ namespace StudentEmploymentPortalAPI.Interfaces
         void AddStudent(Student student);
         void SaveChanges();
         void AddReferee(Guid studentId, Referee referee);
+        void UpdateReferee(Guid studentId,int Id,Referee referee);
         void AddQualification(Guid studentId, Qualification qualification);
+        void UpdateQualification(Guid studentId, int Id, Qualification updatedQualification);
+
         void AddExperience(Guid studentId, Experience experience);
+        void UpdateExperience(Guid studentId, int Id, Experience updatedExperience);
+
     }
 }

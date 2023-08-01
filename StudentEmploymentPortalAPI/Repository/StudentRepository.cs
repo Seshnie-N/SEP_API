@@ -54,6 +54,24 @@ namespace StudentEmploymentPortalAPI.Repository
             _context.Referees.Add(referee);
             _context.SaveChanges();
         }
+        //Updating the Referee for a particular student
+        public void UpdateReferee(Guid studentId, int Id, Referee updatedReferee)
+        {
+            var referee = _context.Referees.FirstOrDefault(r => r.StudentId == studentId && r.Id == Id);
+            if (referee == null)
+            {
+                throw new ArgumentException($"Referee with ID {Id} not found for Student with ID {studentId}.");
+            }
+
+            // Update referee properties here (e.g., referee.Name = updatedReferee.Name)
+            // ...
+
+            _context.Referees.Update(referee);
+            _context.SaveChanges();
+        }
+
+
+
         public void AddQualification(Guid studentId, Qualification qualification)
         {
             var student = _context.Students.FirstOrDefault(s => s.Id == studentId);
@@ -67,6 +85,22 @@ namespace StudentEmploymentPortalAPI.Repository
             _context.SaveChanges();
         }
 
+        public void UpdateQualification(Guid studentId, int Id, Qualification updatedQualification)
+        {
+            var qualification = _context.Qualifications.FirstOrDefault(q => q.StudentId == studentId && q.Id == Id);
+            if (qualification == null)
+            {
+                throw new ArgumentException($"Qualification with ID {Id} not found for Student with ID {studentId}.");
+            }
+
+            // Update qualification properties here (e.g., qualification.Institution = updatedQualification.Institution)
+            // ...
+
+            _context.Qualifications.Update(qualification);
+            _context.SaveChanges();
+        }
+
+
 
         public void AddExperience(Guid studentId, Experience experience)
         {
@@ -78,6 +112,21 @@ namespace StudentEmploymentPortalAPI.Repository
 
             experience.StudentId = studentId;
             _context.Experiences.Add(experience);
+            _context.SaveChanges();
+        }
+
+        public void UpdateExperience(Guid studentId, int Id, Experience updatedExperience)
+        {
+            var experience = _context.Experiences.FirstOrDefault(e => e.StudentId == studentId && e.Id == Id);
+            if (experience == null)
+            {
+                throw new ArgumentException($"Experience with ID {Id} not found for Student with ID {studentId}.");
+            }
+
+            // Update experience properties here (e.g., experience.EmployerName = updatedExperience.EmployerName)
+            // ...
+
+            _context.Experiences.Update(experience);
             _context.SaveChanges();
         }
 
