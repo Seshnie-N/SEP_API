@@ -4,8 +4,8 @@ namespace StudentEmploymentPortalAPI.Interfaces
 {
     public interface IJobPostRepository
     {
-        JobPost GetJobPost(int postId);
-        bool JobPostExists(int postId);
+        JobPost GetJobPost(Guid postId);
+        bool JobPostExists(Guid postId);
         Task<ICollection<JobPost>> GetJobPostsAsync(string userId);
     }
 }

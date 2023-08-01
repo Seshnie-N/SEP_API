@@ -10,7 +10,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
     public class JobPost
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [JsonIgnore]
         [ForeignKey(nameof(Employer))]
         public Guid EmployerId { get; set; }

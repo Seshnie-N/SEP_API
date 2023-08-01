@@ -393,8 +393,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                 name: "JobPosts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EmployerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -529,7 +528,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    JobPostId = table.Column<int>(type: "int", nullable: false),
+                    JobPostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationStatusId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

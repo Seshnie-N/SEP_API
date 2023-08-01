@@ -36,14 +36,14 @@ namespace StudentEmploymentPortalAPI.Controllers
                 return StatusCode((int)HttpStatusCode.NoContent);
             }
 
-            return Ok(posts);
+            return Ok();
         }
 
         // GET api/JobPosts/5
         [HttpGet("{postId}")]
         [ProducesResponseType(200, Type = typeof(JobPost))]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public ActionResult GetJobPost(int postId)
+        public ActionResult GetJobPost(Guid postId)
         {
             var post = _jobPostRepository.GetJobPost(postId);
             if (!ModelState.IsValid)

@@ -13,7 +13,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         [ValidateNever]
         public Student Student { get; set; }
         [ForeignKey(nameof(JobPost))]
-        public int JobPostId { get; set; }
+        public Guid JobPostId { get; set; }
         [ValidateNever]
         public JobPost JobPost { get; set; }
 

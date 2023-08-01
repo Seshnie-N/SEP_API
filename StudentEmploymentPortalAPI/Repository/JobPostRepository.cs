@@ -64,7 +64,11 @@ namespace StudentEmploymentPortalAPI.Repository
             }
             predicate = predicate.Or(p => p.IsApproved && p.JobPostStatus.Name.Equals("Approved") && !p.LimitedTo1stYear && !p.LimitedTo2ndYear && !p.LimitedTo3rdYear && !p.LimitedToHonours && !p.LimitedToGraduate && !p.LimitedToMasters && !p.LimitedToPhd && !p.LimitedToPostdoc);
 
-
+            var allPosts = _context.JobPosts.Include(p => p.JobType)
+                .Include(p => p.Applications)
+                .Include(p => p.WeekHour)
+                .Include(p => p.JobPostStatus)
+                .ToList();
             //filter out job posts that have already been applied to
             var postsAppliedToIds = _context.Applications.Where(a => a.StudentId == student.UserId).Select(a => a.JobPostId);
 
@@ -76,14 +80,10 @@ namespace StudentEmploymentPortalAPI.Repository
                 .ToList();
             posts = posts.Where(p => !postsAppliedToIds.Contains(p.Id)).ToList();
 
-            return _context.JobPosts.Include(p => p.JobType)
-                .Include(p => p.Applications)
-                .Include(p => p.WeekHour)
-                .Include(p => p.JobPostStatus)
-                .ToList(); 
+            return posts; 
         }
 
-        public JobPost GetJobPost(int postId)
+        public JobPost GetJobPost(Guid postId)
         {
             return _context.JobPosts.Include(p => p.JobType)
                 .Include(p => p.Applications)
@@ -94,7 +94,7 @@ namespace StudentEmploymentPortalAPI.Repository
                 .FirstOrDefault();
         }
 
-        public bool JobPostExists(int postId)
+        public bool JobPostExists(Guid postId)
         {
             return _context.JobPosts.Any(p => p.Id == postId);
         }

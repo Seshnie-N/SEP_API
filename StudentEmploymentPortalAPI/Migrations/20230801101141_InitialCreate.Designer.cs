@@ -12,7 +12,7 @@ using StudentEmploymentPortalAPI.Data;
 namespace StudentEmploymentPortalAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230801092410_InitialCreate")]
+    [Migration("20230801101141_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -398,11 +398,9 @@ namespace StudentEmploymentPortalAPI.Migrations
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.DomainModels.JobPost", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ApplicationInstruction")
                         .HasColumnType("nvarchar(max)");
@@ -592,8 +590,8 @@ namespace StudentEmploymentPortalAPI.Migrations
                     b.Property<int?>("ApplicationStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("JobPostId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("JobPostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StudentId")
                         .IsRequired()

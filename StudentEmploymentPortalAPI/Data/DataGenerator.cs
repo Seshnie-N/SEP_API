@@ -26,7 +26,8 @@ namespace SEP.Data
                 .RuleFor(e => e.Id, f => f.Random.Guid())
                 .RuleFor(e => e.Title, f => f.Name.Prefix())
                 .RuleFor(e => e.FirstName, f => f.Name.FirstName())
-                .RuleFor(e => e.FirstName, f => f.Name.LastName())
+                .RuleFor(e => e.LastName, f => f.Name.LastName())
+                .RuleFor(p => p.Email, (f, e) => f.Internet.Email(e.FirstName))
                 .RuleFor(e => e.Phone, f => f.Phone.PhoneNumber("0#########"))
                 .RuleFor(e => e.JobTitle, f => f.Name.JobTitle())
                 .RuleFor(e => e.CompanyRegistrationNumber, f => f.Random.String2(10, "0123456789"))
@@ -45,9 +46,8 @@ namespace SEP.Data
             var postStatus = _context.JobPostStatuses.ToList();
             var jobTypes = _context.JobTypes.ToList();
             var weekHours = _context.WeekHours.ToList();
-            var id = 1;
             return new Faker<JobPost>()
-                .RuleFor(p => p.Id, _ => id++)
+                .RuleFor(p => p.Id, f => f.Random.Guid())
                 .RuleFor(p => p.EmployerId, _ => empId)
                 .RuleFor(p => p.Department, f => f.PickRandom(deps).Name)
                 .RuleFor(p => p.JobTitle, f => f.Name.JobTitle())
@@ -100,6 +100,7 @@ namespace SEP.Data
 
             _context.Employers.AddRange(fakeEmployers);
             _context.JobPosts.AddRange(fakeJobPosts);
+            _context.SaveChanges();
         }
 
     }
