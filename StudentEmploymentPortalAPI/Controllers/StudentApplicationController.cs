@@ -6,6 +6,7 @@ using StudentEmploymentPortalAPI.Dto;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 using System.Net;
+using System.Security.Claims;
 
 namespace StudentEmploymentPortalAPI.Controllers
 {
@@ -38,6 +39,9 @@ namespace StudentEmploymentPortalAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult CreateApplication([FromBody] ApplicationDto applicationDto)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Will get the currently logged in user waiting on merge with IdentityUser implemented first
+            System.Diagnostics.Debug.WriteLine("This is current logged in user's ID: " + userId);
+            
             if (applicationDto == null)
                 return BadRequest();
 
