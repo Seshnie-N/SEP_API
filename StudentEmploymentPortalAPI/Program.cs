@@ -29,6 +29,7 @@ namespace StudentEmploymentPortalAPI
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<IJobPostRepository, JobPostRepository>();
             builder.Services.AddScoped<ILookupRepository, LookupRepository>();
+            builder.Services.AddScoped<ICVRepository, CVRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddTransient<DataGenerator>();
 
@@ -106,6 +107,8 @@ namespace StudentEmploymentPortalAPI
             //Seed Data
             if (args.Length == 1 && args[0].ToLower() == "seeddata")
                 await app.SeedDataAsync();
+
+            await app.SeedDataAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
