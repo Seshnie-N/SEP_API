@@ -36,7 +36,7 @@ namespace StudentEmploymentPortalAPI.Controllers
                 return StatusCode((int)HttpStatusCode.NoContent);
             }
 
-            return Ok();
+            return Ok(_mapper.Map<List<JobPostDto>>(posts));
         }
 
         // GET api/JobPosts/5
@@ -54,7 +54,7 @@ namespace StudentEmploymentPortalAPI.Controllers
                 return StatusCode((int)HttpStatusCode.NotFound);
             }
 
-            return Ok(post);
+            return Ok(_mapper.Map<JobPostDto>(post));
         }
 
         

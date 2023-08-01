@@ -8,7 +8,9 @@ namespace StudentEmploymentPortalAPI.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<JobPost, JobPostDto>();   
+            CreateMap<JobPost, JobPostDto>()
+                .ForMember(dest => dest.JobType, opt => opt.MapFrom(src => src.JobType.Name))
+                .ForMember(dest => dest.WeekHour, opt => opt.MapFrom(src => src.WeekHour.Range));    
         }
     }
 }
