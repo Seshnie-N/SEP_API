@@ -8,7 +8,9 @@ namespace StudentEmploymentPortalAPI.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<JobPost, JobPostDto>();   
+            CreateMap<JobPost, JobPostDto>();
+            CreateMap<StudentApplication, ApplicationDto>();
+            CreateMap<ApplicationDto, StudentApplication>();
         }
     }
 }

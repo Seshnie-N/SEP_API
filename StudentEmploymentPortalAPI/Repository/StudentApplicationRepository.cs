@@ -5,7 +5,7 @@ using StudentEmploymentPortalAPI.Models.DomainModels;
 
 namespace StudentEmploymentPortalAPI.Repository
 {
-    public class StudentApplicationRepository
+    public class StudentApplicationRepository : IStudentApplicationRepository
     {
         private readonly DataContext _context;
         public StudentApplicationRepository(DataContext context)
