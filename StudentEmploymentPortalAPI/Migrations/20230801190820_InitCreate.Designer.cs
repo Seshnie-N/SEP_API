@@ -12,8 +12,8 @@ using StudentEmploymentPortalAPI.Data;
 namespace StudentEmploymentPortalAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230801101141_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230801190820_InitCreate")]
+    partial class InitCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

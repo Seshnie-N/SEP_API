@@ -98,8 +98,21 @@ namespace SEP.Data
             var employers = empGen.Generate(10);
             fakeEmployers.AddRange(employers);
 
-            _context.Employers.AddRange(fakeEmployers);
-            _context.JobPosts.AddRange(fakeJobPosts);
+            foreach (var emp in fakeEmployers)
+            {
+                if (!_context.Employers.Any(e => e.Id == emp.Id))
+                {
+                    _context.Employers.Add(emp);
+                }
+            }
+            foreach (var post in fakeJobPosts)
+            {
+                if (!_context.JobPosts.Any(p => p.Id == post.Id))
+                {
+                    _context.JobPosts.Add(post);
+                }
+            }
+
             _context.SaveChanges();
         }
 
