@@ -104,15 +104,38 @@ namespace StudentEmploymentPortalAPI.Controllers
             }
         }
 
+        // PUT: api/Students/UpdateStudent/{studentId}
+        [HttpPut("{studentId}/UpdateStudent")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateStudent(Guid studentId, Student updatedStudent)
+        {
+            try
+            {
+                _studentRepository.UpdateStudent(studentId, updatedStudent);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+
+
+
         //PUT: api/Students/UpdateReferee/{studentID}/{refereeId}
         [HttpPut("{studentId}/UpdateReferee/{refereeId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult UpdateReferee(Guid studentId,int Id,Referee referee)
+        public IActionResult UpdateReferee(Guid studentId,int refereeId,Referee referee)
         {
             try
             {
-                _studentRepository.UpdateReferee(studentId, Id, referee);
+                _studentRepository.UpdateReferee(studentId, refereeId, referee);
                 return NoContent();
             }
             catch (ArgumentException ex)
@@ -125,11 +148,11 @@ namespace StudentEmploymentPortalAPI.Controllers
         [HttpPut("{studentId}/UpdateQualification/{qualificationId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult UpdateQualification(Guid studentId, int Id, Qualification qualification)
+        public IActionResult UpdateQualification(Guid studentId, int qualificationId, Qualification qualification)
         {
             try
             {
-                _studentRepository.UpdateQualification(studentId, Id, qualification);
+                _studentRepository.UpdateQualification(studentId, qualificationId, qualification);
                 return NoContent();
             }
             catch (ArgumentException ex)
@@ -139,14 +162,14 @@ namespace StudentEmploymentPortalAPI.Controllers
         }
 
         // PUT: api/Students/UpdateExperience/{studentId}/{experienceId}
-        [HttpPut("{studentId}/UpdateExperience/{Id}")]
+        [HttpPut("{studentId}/UpdateExperience/{experienceId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult UpdateExperience(Guid studentId, int Id, Experience experience)
+        public IActionResult UpdateExperience(Guid studentId, int experienceId, Experience experience)
         {
             try
             {
-                _studentRepository.UpdateExperience(studentId, Id, experience);
+                _studentRepository.UpdateExperience(studentId, experienceId, experience);
                 return NoContent();
             }
             catch (ArgumentException ex)

@@ -9,6 +9,7 @@ namespace StudentEmploymentPortalAPI.Interfaces
         Student GetStudentById(Guid id);
 
         void AddStudent(Student student);
+        void UpdateStudent(Guid studentId, Student updatedStudent);
         void SaveChanges();
         void AddReferee(Guid studentId, Referee referee);
         void UpdateReferee(Guid studentId,int Id,Referee referee);

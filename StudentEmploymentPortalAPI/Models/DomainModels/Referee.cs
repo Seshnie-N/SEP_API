@@ -10,7 +10,7 @@ namespace StudentEmploymentPortalAPI.Models
         public int Id { get; set; }
         [ValidateNever]
         public Guid StudentId { get; set; }
-   //     public Student Student { get; set; }
+
         public string Name { get; set; }
         public string JobTitle { get; set; }
         public string Insitution { get; set; }

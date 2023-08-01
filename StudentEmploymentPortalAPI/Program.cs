@@ -21,6 +21,9 @@ namespace StudentEmploymentPortalAPI
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<IJobPostRepository, JobPostRepository>();
+            builder.Services.AddScoped<ICVRepository, CVRepository>();
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
