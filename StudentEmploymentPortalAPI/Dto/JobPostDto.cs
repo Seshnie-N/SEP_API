@@ -7,7 +7,6 @@ namespace StudentEmploymentPortalAPI.Dto
     public class JobPostDto
     {
         public int Id { get; set; }
-        public Guid EmployerId { get; set; }
         public string JobTitle { get; set; }
         public string Location { get; set; }
         public string JobDescription { get; set; }
@@ -25,5 +24,6 @@ namespace StudentEmploymentPortalAPI.Dto
         public decimal HourlyRate { get; set; }
         public string MinimumRequirements { get; set; }
         public string ApplicationInstruction { get; set; }
+        //department?
     }
 }
