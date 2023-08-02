@@ -15,6 +15,7 @@ namespace StudentEmploymentPortalAPI.Data
         public DbSet<Employer> Employers { get; set; }
         public DbSet<JobPost> JobPosts { get; set; }
         public DbSet<StudentApplication> Applications { get; set; }
+        public DbSet<ApplicationDocument> ApplicationDocuments { get; set; }
 
         //Look-up DbSets
         public DbSet<BusinessType> BusinessTypes { get; set; }
