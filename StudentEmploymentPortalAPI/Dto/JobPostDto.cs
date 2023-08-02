@@ -6,18 +6,14 @@ namespace StudentEmploymentPortalAPI.Dto
 {
     public class JobPostDto
     {
-        public int Id { get; set; }
-        public Guid EmployerId { get; set; }
+        public Guid Id { get; set; }
         public string JobTitle { get; set; }
+        public string Department { get; set; }
         public string Location { get; set; }
         public string JobDescription { get; set; }
         public string KeyResponsibilities { get; set; }
-        public int JobTypeId { get; set; }
-        [ValidateNever]
-        public JobType JobType { get; set; }
-        public int WeekHourId { get; set; }
-        [ValidateNever]
-        public WeekHour WeekHour { get; set; }
+        public string JobType { get; set; }
+        public string WeekHour { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime ClosingDate { get; set; }
@@ -25,5 +21,6 @@ namespace StudentEmploymentPortalAPI.Dto
         public decimal HourlyRate { get; set; }
         public string MinimumRequirements { get; set; }
         public string ApplicationInstruction { get; set; }
+       
     }
 }
