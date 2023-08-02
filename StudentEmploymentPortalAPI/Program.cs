@@ -27,6 +27,7 @@ namespace StudentEmploymentPortalAPI
             }); ;
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IStudentApplicationRepository, StudentApplicationRepository>();
             builder.Services.AddScoped<IJobPostRepository, JobPostRepository>();
             builder.Services.AddScoped<ILookupRepository, LookupRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
