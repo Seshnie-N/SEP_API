@@ -11,8 +11,8 @@ namespace StudentEmploymentPortalAPI.Models
         public int Id { get; set; }
         [ForeignKey(nameof(Student))]
         public string StudentId { get; set; }
-        [ValidateNever]
-        public Student Student { get; set; }
+        // [ValidateNever]
+        // public Student Student { get; set; }
         [Required(ErrorMessage = "Enter the name of the institution at which the qualification was obtained.")]
         public string Institution { get; set; }
         [Required(ErrorMessage = "Please provide a valid start date.")]
@@ -25,5 +25,6 @@ namespace StudentEmploymentPortalAPI.Models
         public string? Majors { get; set; }
         public string? SubMajors { get; set; }
         public string? Research { get; set; }
+        //public bool? IsAvailable { get; set; }
     }
 }
