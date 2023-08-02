@@ -7,7 +7,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
     public class ApplicationDocument
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string FileType { get; set; }
         public string Extension { get; set; }

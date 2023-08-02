@@ -7,7 +7,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
     public class StudentApplication
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [ForeignKey(nameof(Student))]
         public string StudentId { get; set; }
         [ValidateNever]
