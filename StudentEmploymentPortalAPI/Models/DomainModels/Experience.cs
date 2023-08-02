@@ -11,8 +11,8 @@ namespace StudentEmploymentPortalAPI.Models
         public int Id { get; set; }
         [ForeignKey(nameof(Student))]
         public string StudentId { get; set; }
-        [ValidateNever]
-        public Student Student { get; set; }
+        // [ValidateNever]
+        // public Student Student { get; set; }
         [Required(ErrorMessage = "Please provide an employer name.")]
         public string EmployerName { get; set; }
         [Required(ErrorMessage = "Please provide a valid start date.")]

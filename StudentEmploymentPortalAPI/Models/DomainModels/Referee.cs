@@ -11,8 +11,8 @@ namespace StudentEmploymentPortalAPI.Models
         public int Id { get; set; }
         [ForeignKey(nameof(Student))]
         public string StudentId { get; set; }
-        [ValidateNever]
-        public Student Student { get; set; }
+        // [ValidateNever]
+        // public Student Student { get; set; }
         [Required(ErrorMessage = "Please provide a name for the referee.")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Please provide a job title for the referee.")]

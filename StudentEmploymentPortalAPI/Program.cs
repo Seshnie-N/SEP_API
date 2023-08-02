@@ -32,6 +32,7 @@ namespace StudentEmploymentPortalAPI
             builder.Services.AddScoped<ICVRepository, CVRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddTransient<DataGenerator>();
+           
 
             builder.Services.AddDbContext<DataContext>(options =>
             {
@@ -105,10 +106,22 @@ namespace StudentEmploymentPortalAPI
             var app = builder.Build();
 
             //Seed Data
-            if (args.Length == 1 && args[0].ToLower() == "seeddata")
-                await app.SeedDataAsync();
+            // if (args.Length == 1 && args[0].ToLower() == "seeddata")
+            //     await app.SeedDataAsync();
 
-            await app.SeedDataAsync();
+            // await app.SeedDataAsync();
+
+            if (args.Length > 0 && args[0].ToLower() == "seeddata")
+                {
+                    await app.SeedDataAsync();
+                }
+              // Add this in the Configure method of Program.cs
+app.UseCors(builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyHeader()
+           .AllowAnyMethod();
+});
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

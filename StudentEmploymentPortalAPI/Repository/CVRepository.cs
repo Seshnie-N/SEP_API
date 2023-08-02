@@ -21,12 +21,14 @@ namespace StudentEmploymentPortalAPI.Repository
         public Student GetStudent(Guid studentId)
         {
             var student = _dbContext.Students
+                         .Include(p => p.User)
                          .Include(p => p.DriversLicense)
                          .Include(p => p.Gender)
                          .Include(p => p.Race)
                          .Include(p => p.Nationality)
                          .Include(p => p.YearOfStudy)
                          .Include(p => p.Department)
+                         .Include(p => p.Department.Faculty)
                          .SingleOrDefault(x => x.UserId == studentId.ToString());
 
             return student;
