@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentEmploymentPortalAPI.Data;
@@ -12,6 +13,7 @@ namespace StudentEmploymentPortalAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StudentApplicationController : ControllerBase
     {
         private readonly IStudentApplicationRepository _applicationRepository;
@@ -23,33 +25,34 @@ namespace StudentEmploymentPortalAPI.Controllers
         }
 
         /*[HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
-        public IActionResult GetApplication()
+        [ProducesResponseType(200, Type = typeof(IEnumerable<StudentApplication>))]
+        public IActionResult GetApplications()
         {
-            var applications = _mapper.Map<List<StudentApplication>>(_categoryRepository.GetCategories());
+            var applications = _mapper.Map<List<StudentApplication>>(_applicationRepository.GetApplications());
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(categories);
+            return Ok(applications);
         }*/
-        
+
         [HttpPost] 
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateApplication([FromBody] ApplicationDto applicationDto)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Will get the currently logged in user waiting on merge with IdentityUser implemented first
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             System.Diagnostics.Debug.WriteLine("This is current logged in user's ID: " + userId);
             
             if (applicationDto == null)
                 return BadRequest();
-
+            
+            /*Fetching application with same JobPostId and StudentId as parsed through the DTO if it already exists*/
             var category = _applicationRepository.GetApplications()
-                .Where(c => c.JobPostId == applicationDto.JobPostId && c.StudentId == applicationDto.StudentId)
+                .Where(c => c.JobPostId == applicationDto.JobPostId && c.StudentId == userId)
                 .FirstOrDefault();
 
-            if (category != null)
+            if (category != null) /*Checking if application already exists*/
             {
                 ModelState.AddModelError("", "Application already exists");
                 return StatusCode(422, ModelState);
@@ -58,8 +61,8 @@ namespace StudentEmploymentPortalAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var applicationMap = _mapper.Map<StudentApplication>(applicationDto);
-
+            var applicationMap = _mapper.Map<StudentApplication>(applicationDto); /*Mapping the data parsed through DTO to a StudentApplication object*/
+            applicationMap.StudentId = userId; /*Updating the StudentApplication object's StudentId to the current logged in UserId*/
             if (!_applicationRepository.CreateApplication(applicationMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
