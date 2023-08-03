@@ -22,7 +22,7 @@ namespace StudentEmploymentPortalAPI.Controllers
         {
             if (await _authService.Register(user)) 
             {
-                return StatusCode((int)HttpStatusCode.Created);
+                return Ok(StatusCode((int)HttpStatusCode.Created));
             }
             return BadRequest();
         }
