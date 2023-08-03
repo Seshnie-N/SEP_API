@@ -6,7 +6,7 @@ namespace StudentEmploymentPortalAPI.Dto
 {
     public class ApplicationUserDto
     {
-         public string UserId { get; set; }
+         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -14,7 +14,7 @@ namespace StudentEmploymentPortalAPI.Dto
 
     public class DepartmentDto
     {
-         public int DepartmentId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public Faculty Faculty { get; set; }
     }

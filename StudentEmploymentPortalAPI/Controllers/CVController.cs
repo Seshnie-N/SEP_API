@@ -174,13 +174,27 @@ namespace StudentEmploymentPortalAPI.Controllers
 
 
         //GET: api/Student/
+        [HttpGet("Get Student CV")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Student>))]
+        public IActionResult GetCV(Guid StudentId)
+        {
+
+
+            var Student = _CVRepository.GetCV(StudentId);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var studentCVDto = _mapper.Map<Student, StudentCVDto>(Student);
+
+            return Ok(studentCVDto);
+        }
         [HttpGet("Get Student profile")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Student>))]
         public IActionResult GetStudent(Guid StudentId)
         {
 
 
-            var Student = _CVRepository.GetStudent(StudentId);
+            var Student = _CVRepository.GetStudentProfile(StudentId);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -198,7 +212,9 @@ namespace StudentEmploymentPortalAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(Qualifications);
+
+            var qualificationsDto = _mapper.Map<IEnumerable<Qualification>, IEnumerable<QualificationsDto>>(Qualifications);
+            return Ok(qualificationsDto);
         }
 
         //GET: api/Qualification/
@@ -222,7 +238,9 @@ namespace StudentEmploymentPortalAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(Experiences);
+            var ExperiencesDto = _mapper.Map<IEnumerable<Experience>, IEnumerable<ExperiencesDto>>(Experiences);
+
+            return Ok(ExperiencesDto);
         }
         //GET: api/Experience/
         [HttpGet("Get Experience")]
@@ -246,7 +264,9 @@ namespace StudentEmploymentPortalAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(Referees);
+            var RefereesDto = _mapper.Map<IEnumerable<Referee>, IEnumerable<RefereesDto>>(Referees);
+
+            return Ok(RefereesDto);
         }
 
         //GET: api/Referee/

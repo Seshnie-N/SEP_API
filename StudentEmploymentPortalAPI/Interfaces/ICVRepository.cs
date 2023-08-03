@@ -6,7 +6,8 @@ namespace StudentEmploymentPortalAPI.Interfaces
     public interface ICVRepository
     {
         
-        Student GetStudent(Guid StudentId);
+        Student GetStudentProfile(Guid StudentId);
+        Student GetCV(Guid StudentId);
         Qualification GetQualification(int QualificationId);
         Experience GetExperience(int ExperienceId);
         Referee GetReferee(int RefereeId);

@@ -161,7 +161,7 @@ namespace StudentEmploymentPortalAPI.Repository
         }
 
         //Get methods
-        public Student GetStudent(Guid studentId)
+        public Student GetStudentProfile(Guid studentId)
         {
             var student = _dbContext.Students
                          .Include(p => p.User)
@@ -211,6 +211,26 @@ namespace StudentEmploymentPortalAPI.Repository
         {
             var referees = _dbContext.Referees.Where(x => x.StudentId == studentId.ToString()).ToList();
             return referees;
+        }
+
+
+        public Student GetCV(Guid studentId)
+        {
+            var student = _dbContext.Students
+                        .Include(p => p.User)
+                        .Include(p => p.DriversLicense)
+                        .Include(p => p.Gender)
+                        .Include(p => p.Race)
+                        .Include(p => p.Nationality)
+                        .Include(p => p.YearOfStudy)
+                        .Include(p => p.Department)
+                        .Include(p => p.Department.Faculty)
+                        .Include(p => p.Qualifications)
+                        .Include(p => p.Experiences)
+                        .Include(p => p.Referees)
+                        .SingleOrDefault(x => x.UserId == studentId.ToString());
+
+            return student;
         }
     }
 }
