@@ -30,6 +30,7 @@ namespace StudentEmploymentPortalAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var student = _mapper.Map<Student>(studentDto);
 
             var student = _mapper.Map<Student>(studentDto);
       
