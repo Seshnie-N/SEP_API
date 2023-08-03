@@ -32,7 +32,7 @@ namespace StudentEmploymentPortalAPI.Controllers
             var posts = await _jobPostRepository.GetJobPostsAsync(userId);
             if (posts.Count == 0)
                 return NoContent();
-
+            var mapped = _mapper.Map<List<JobPostDto>>(posts);
             return Ok(_mapper.Map<List<JobPostDto>>(posts));
         }
 

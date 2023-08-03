@@ -11,7 +11,6 @@ namespace StudentEmploymentPortalAPI.Helper
             CreateMap<JobPost, JobPostDto>()
                 .ForMember(dest => dest.JobType, opt => opt.MapFrom(src => src.JobType.Name))
                 .ForMember(dest => dest.WeekHour, opt => opt.MapFrom(src => src.WeekHour.Range));    
-            CreateMap<JobPost, JobPostDto>();
             CreateMap<StudentApplication, ApplicationDto>();
             CreateMap<ApplicationDto, StudentApplication>();
         }
