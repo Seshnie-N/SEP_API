@@ -8,6 +8,8 @@ namespace StudentEmploymentPortalAPI.Interfaces
         bool CreateApplication(StudentApplication application);
         bool Save();
         ICollection<StudentApplication> GetApplications();
+        ICollection<StudentApplication> GetApplications(string studentId);
+        StudentApplication GetApplication(Guid applicationId);
         //StudentApplication GetCategory(int id);
     }
 }

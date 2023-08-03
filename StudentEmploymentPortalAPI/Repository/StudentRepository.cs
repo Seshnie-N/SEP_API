@@ -17,6 +17,30 @@ namespace StudentEmploymentPortalAPI.Repository
             _context = context;
         }
 
+        public void Create(string userId, RegisterDto user)
+        {
+            bool isSA = _context.Nationalities.Where(n => n.Id == user.NationalityId).Select(n => n.Name).FirstOrDefault() == "South African";
+            var student = new Student
+            {
+                UserId = userId,
+                Address = user.Address,
+                IdNumber = user.IdNumber,
+                DriversLicenseId = user.DriversLicenseId,
+                CareerObjective = user.CareerObjective,
+                GenderId = user.GenderId,
+                RaceId = user.RaceId,
+                NationalityId = user.NationalityId,
+                IsSouthAfrican = isSA,
+                YearOfStudyId = user.YearOfStudyId,
+                DepartmentId = user.DepartmentId,
+                Skills = user.Skills,
+                Achievements = user.Achievements,
+                Interests = user.Interests
+            };
+            _context.Students.Add(student);
+            _context.SaveChanges();
+        }
+
         public ICollection<Student> GetStudents()
         {
             return _context.Students.Include("DriversLicense")

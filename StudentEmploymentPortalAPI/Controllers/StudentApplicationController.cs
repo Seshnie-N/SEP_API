@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentEmploymentPortalAPI.Data;
@@ -12,6 +13,7 @@ namespace StudentEmploymentPortalAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StudentApplicationController : ControllerBase
     {
         private readonly IStudentApplicationRepository _applicationRepository;
@@ -33,15 +35,15 @@ namespace StudentEmploymentPortalAPI.Controllers
 
             return Ok(categories);
         }*/
-        
-        [HttpPost] 
+
+        [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateApplication([FromBody] ApplicationDto applicationDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Will get the currently logged in user waiting on merge with IdentityUser implemented first
             System.Diagnostics.Debug.WriteLine("This is current logged in user's ID: " + userId);
-            
+
             if (applicationDto == null)
                 return BadRequest();
 
@@ -67,6 +69,29 @@ namespace StudentEmploymentPortalAPI.Controllers
             }
 
             return Ok("Successfully created");
+        }
+
+        [HttpGet()]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<StudentApplication>))]
+        public IActionResult GetApplications()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Ok(_applicationRepository.GetApplications(userId));
+        }
+
+        [HttpGet("{applicationId}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<StudentApplication>))]
+        public IActionResult GetApplications(Guid applicationId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var application = _applicationRepository.GetApplication(applicationId);
+            if (application.StudentId != userId)
+            {
+                return Unauthorized();
+            } 
+            return Ok(application);
         }
     }
 }

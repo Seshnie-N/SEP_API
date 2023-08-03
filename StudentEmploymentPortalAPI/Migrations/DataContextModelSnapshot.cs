@@ -219,9 +219,6 @@ namespace StudentEmploymentPortalAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ApplicationId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -250,9 +247,9 @@ namespace StudentEmploymentPortalAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationId");
+                    b.HasIndex("StudentApplicationId");
 
-                    b.ToTable("ApplicationDocument");
+                    b.ToTable("ApplicationDocuments");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.DomainModels.ApplicationUser", b =>
@@ -519,7 +516,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Achivements")
+                    b.Property<string>("Achievements")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
@@ -578,11 +575,9 @@ namespace StudentEmploymentPortalAPI.Migrations
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.DomainModels.StudentApplication", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("ApplicationStatusId")
                         .HasColumnType("int");
@@ -979,7 +974,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                 {
                     b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.StudentApplication", "Application")
                         .WithMany("Documents")
-                        .HasForeignKey("ApplicationId")
+                        .HasForeignKey("StudentApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

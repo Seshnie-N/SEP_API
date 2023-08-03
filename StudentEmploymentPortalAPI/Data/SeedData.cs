@@ -490,11 +490,11 @@ namespace SEP.Data
                         GenderId = 1,
                         RaceId = 2,
                         NationalityId = 3,
-                        IsSouthAfrican = true,
+                        IsSouthAfrican = false,
                         YearOfStudyId = 1,
                         DepartmentId = 5,
                         Skills = "C#, Java, HTML, CSS",
-                        Achivements = "Won coding competition 2022",
+                        Achievements = "Won coding competition 2022",
                         Interests = "Reading, Swimming, Gaming",
                     };
                     var experiences = new List<Experience>

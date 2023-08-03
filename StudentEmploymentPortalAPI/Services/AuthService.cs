@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using StudentEmploymentPortalAPI.Dto;
+using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -15,11 +16,13 @@ namespace StudentEmploymentPortalAPI.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _config;
+        private readonly IStudentRepository _studentRepository;
 
-        public AuthService(UserManager<ApplicationUser> userManager,IConfiguration config)
+        public AuthService(UserManager<ApplicationUser> userManager,IConfiguration config, IStudentRepository studentRepository)
         {
             _userManager = userManager;
             _config = config;
+            _studentRepository = studentRepository;
         }
 
         public async Task<bool> Register(RegisterDto user)
@@ -29,12 +32,14 @@ namespace StudentEmploymentPortalAPI.Services
                 UserName = user.Email,
                 Email = user.Email,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
             };
             var result = await _userManager.CreateAsync(applicationUser, user.Password);
             if (result.Succeeded)
-            {
+            {                
                 await _userManager.AddToRoleAsync(applicationUser, "User");
+                _studentRepository.Create(await _userManager.GetUserIdAsync(applicationUser), user);
                 return true;
             }
             return false;

@@ -30,11 +30,8 @@ namespace StudentEmploymentPortalAPI.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var posts = await _jobPostRepository.GetJobPostsAsync(userId);
-
             if (posts.Count == 0)
-            {
-                return StatusCode((int)HttpStatusCode.NoContent);
-            }
+                return NoContent();
 
             return Ok(_mapper.Map<List<JobPostDto>>(posts));
         }
@@ -45,14 +42,10 @@ namespace StudentEmploymentPortalAPI.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public ActionResult GetJobPost(Guid postId)
         {
-            var post = _jobPostRepository.GetJobPost(postId);
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (!_jobPostRepository.JobPostExists(postId))
+                return NotFound();
 
-            if (post == null)
-            {
-                return StatusCode((int)HttpStatusCode.NotFound);
-            }
+            var post = _jobPostRepository.GetJobPost(postId);
 
             return Ok(_mapper.Map<JobPostDto>(post));
         }

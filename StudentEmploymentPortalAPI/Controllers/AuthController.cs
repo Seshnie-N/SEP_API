@@ -20,6 +20,10 @@ namespace StudentEmploymentPortalAPI.Controllers
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> Register(RegisterDto user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (await _authService.Register(user)) 
             {
                 return StatusCode((int)HttpStatusCode.Created);
@@ -32,7 +36,7 @@ namespace StudentEmploymentPortalAPI.Controllers
         { 
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             if (await _authService.Login(user))
             {

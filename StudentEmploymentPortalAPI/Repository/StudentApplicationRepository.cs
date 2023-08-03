@@ -16,6 +16,17 @@ namespace StudentEmploymentPortalAPI.Repository
         {
             return _context.Applications.ToList();
         }
+        public ICollection<StudentApplication> GetApplications(string studentId)
+        {
+            var applications = _context.Applications.Include(a => a.JobPost).Where(a => a.StudentId == studentId).ToList();
+            return applications;
+        }
+
+        public StudentApplication GetApplication(Guid applicationId)
+        {
+            var application = _context.Applications.Include(a => a.JobPost).Include(a => a.Documents).Where(a => a.Id == applicationId).FirstOrDefault();
+            return application;
+        }
         public bool CreateApplication(StudentApplication application)
         {
             _context.Add(application);
@@ -26,5 +37,6 @@ namespace StudentEmploymentPortalAPI.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
     }
 }

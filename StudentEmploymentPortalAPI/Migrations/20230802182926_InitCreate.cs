@@ -471,7 +471,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                     YearOfStudyId = table.Column<int>(type: "int", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     Skills = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Achivements = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Achievements = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Interests = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -525,8 +525,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                 name: "Applications",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     JobPostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationStatusId = table.Column<int>(type: "int", nullable: true)
@@ -629,7 +628,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationDocument",
+                name: "ApplicationDocuments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -640,24 +639,23 @@ namespace StudentEmploymentPortalAPI.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StudentApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ApplicationId = table.Column<int>(type: "int", nullable: false)
+                    StudentApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationDocument", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationDocuments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApplicationDocument_Applications_ApplicationId",
-                        column: x => x.ApplicationId,
+                        name: "FK_ApplicationDocuments_Applications_StudentApplicationId",
+                        column: x => x.StudentApplicationId,
                         principalTable: "Applications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationDocument_ApplicationId",
-                table: "ApplicationDocument",
-                column: "ApplicationId");
+                name: "IX_ApplicationDocuments_StudentApplicationId",
+                table: "ApplicationDocuments",
+                column: "StudentApplicationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_ApplicationStatusId",
@@ -803,7 +801,7 @@ namespace StudentEmploymentPortalAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApplicationDocument");
+                name: "ApplicationDocuments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

@@ -15,8 +15,8 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         public string Description { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string FilePath { get; set; }
-       public Guid StudentApplicationId { get; set; }
-        /* [ValidateNever]
-        public StudentApplication Application { get; set; }*/
+        public Guid StudentApplicationId { get; set; }
+        [ValidateNever]
+        public StudentApplication Application { get; set; }
     }
 }
