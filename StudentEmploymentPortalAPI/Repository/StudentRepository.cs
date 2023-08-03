@@ -61,6 +61,7 @@ namespace StudentEmploymentPortalAPI.Repository
                 .Include("YearOfStudy")
                 .Include("Department")
                 .FirstOrDefault();
+            ;
         }
     }
 }

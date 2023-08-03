@@ -8,6 +8,7 @@ using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 using System.Net;
 using System.Security.Claims;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace StudentEmploymentPortalAPI.Controllers
 {
@@ -73,16 +74,17 @@ namespace StudentEmploymentPortalAPI.Controllers
 
         [HttpGet()]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<StudentApplication>))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<ApplicationResponseDto>))]
         public IActionResult GetApplications()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return Ok(_applicationRepository.GetApplications(userId));
+            var applications = _applicationRepository.GetApplications(userId);
+            return Ok(_mapper.Map<List<ApplicationResponseDto>>(applications));
         }
 
         [HttpGet("{applicationId}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<StudentApplication>))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<CompleteApplicationResponseDto>))]
         public IActionResult GetApplications(Guid applicationId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -91,7 +93,7 @@ namespace StudentEmploymentPortalAPI.Controllers
             {
                 return Unauthorized();
             } 
-            return Ok(application);
+            return Ok(_mapper.Map<CompleteApplicationResponseDto>(application));
         }
     }
 }

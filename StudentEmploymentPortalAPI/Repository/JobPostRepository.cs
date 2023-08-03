@@ -76,7 +76,6 @@ namespace StudentEmploymentPortalAPI.Repository
                 .Include(p => p.Applications)
                 .Include(p => p.WeekHour)
                 .Include(p => p.JobPostStatus)
-                .Include(p => p.Employer)
                 .ToList();
             posts = posts.Where(p => !postsAppliedToIds.Contains(p.Id)).ToList();
 

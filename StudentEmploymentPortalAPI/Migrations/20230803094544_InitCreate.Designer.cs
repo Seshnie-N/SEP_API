@@ -12,7 +12,7 @@ using StudentEmploymentPortalAPI.Data;
 namespace StudentEmploymentPortalAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230802182926_InitCreate")]
+    [Migration("20230803094544_InitCreate")]
     partial class InitCreate
     {
         /// <inheritdoc />

@@ -24,7 +24,7 @@ namespace StudentEmploymentPortalAPI.Controllers
         }
         // GET: api/JobPosts
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<JobPost>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<JobPostDto>))]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<ActionResult> GetJobPosts()
         {
@@ -32,14 +32,13 @@ namespace StudentEmploymentPortalAPI.Controllers
             var posts = await _jobPostRepository.GetJobPostsAsync(userId);
             if (posts.Count == 0)
                 return NoContent();
-            var mapped = _mapper.Map<List<JobPostDto>>(posts);
             return Ok(_mapper.Map<List<JobPostDto>>(posts));
         }
 
         // GET api/JobPosts/5
         [HttpGet("{postId}")]
-        [ProducesResponseType(200, Type = typeof(JobPost))]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(200, Type = typeof(JobPostDto))]
+        [ProducesResponseType(404)]
         public ActionResult GetJobPost(Guid postId)
         {
             if (!_jobPostRepository.JobPostExists(postId))

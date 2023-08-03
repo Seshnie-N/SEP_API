@@ -475,7 +475,7 @@ namespace SEP.Data
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                 };
-                var result = await userManager.CreateAsync(user, "Pa$$w)ord1.");
+                var result = await userManager.CreateAsync(user, "password123");
                 if (result.Succeeded)
                 {
                     userManager.AddToRoleAsync(user, "User").Wait();
