@@ -10,7 +10,7 @@ namespace StudentEmploymentPortalAPI.Dto
         //public string StudentId { get; set; }
         public Guid JobPostId { get; set; }
         public int ApplicationStatusId { get; set; }
-        //public List<IFormFile> files { get; set; } //List of files
-        //public List<string> DocumentName { get; set; } //List of names of the files
+        public List<IFormFile>? Files { get; set; } //List of files
+        public List<string>? DocumentName { get; set; } //List of names of the files
     }
 }
