@@ -14,7 +14,73 @@ namespace StudentEmploymentPortalAPI.Controllers
         public CVController(ICVRepository CVRepository)
         {
             _CVRepository = CVRepository;
-           
+            _mapper = mapper;
+
+        }
+        //POST METHODS
+
+        //#Student
+
+        [HttpPost("AddStudent/{Student}")]
+        [ProducesResponseType(201, Type = typeof(Student))]
+        [ProducesResponseType(400)]
+        public IActionResult AddStudent(AddStudentDto studentDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var student = _mapper.Map<Student>(studentDto);
+      
+            _CVRepository.AddStudent(student);
+            _CVRepository.SaveChanges();
+
+            // Return the newly created student with a 201 Created status.
+            return CreatedAtAction(nameof(GetStudent), new { id = student.UserId }, student);
+        }
+
+        // PUT: api/Students/UpdateStudent/{studentId}
+        [HttpPut("UpdateStudent/{studentId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateStudent(Guid studentId, Student updatedStudent)
+        {
+            try
+            {
+                _CVRepository.UpdateStudent(studentId, updatedStudent);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        //#Referee
+
+        // POST: api/Students/AddReferee/{studentId}
+        [HttpPost("AddReferee/{studentId}")]
+        [ProducesResponseType(201, Type = typeof(Referee))]
+        [ProducesResponseType(400)]
+        public IActionResult AddReferee(Guid studentId, Referee referee)
+        {
+            try
+            {
+                _CVRepository.AddReferee(studentId, referee);
+                return CreatedAtAction(nameof(GetStudent), new { id = studentId }, referee);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+            }
+        }
+            }
+        }
+            }
+        }
+            }
         }
 
         //GET: api/Student/

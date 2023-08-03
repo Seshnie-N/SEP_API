@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentEmploymentPortalAPI.Data;
+using StudentEmploymentPortalAPI.Dto;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models;
 using StudentEmploymentPortalAPI.Models.DomainModels;
@@ -90,6 +91,11 @@ namespace StudentEmploymentPortalAPI.Repository
                 return null;
 
             return Referees;
+        }
+
+        public void AddStudent(AddStudentDto student)
+        {
+            throw new NotImplementedException();
         }
     }
 }

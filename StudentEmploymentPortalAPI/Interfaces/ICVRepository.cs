@@ -1,4 +1,5 @@
-﻿using StudentEmploymentPortalAPI.Models;
+﻿using StudentEmploymentPortalAPI.Dto;
+using StudentEmploymentPortalAPI.Models;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 
 namespace StudentEmploymentPortalAPI.Interfaces
@@ -14,5 +15,20 @@ namespace StudentEmploymentPortalAPI.Interfaces
         IList<Experience> GetExperiences(Guid StudentId);
         IList<Referee> GetReferees(Guid StudentId);
 
+        //Create
+        void AddStudent(Student student);
+        void UpdateStudent(Guid studentId, Student updatedStudent);
+       
+        void AddReferee(Guid studentId, Referee referee);
+        void UpdateReferee(Guid studentId, int Id, Referee referee);
+
+        void AddQualification(Guid studentId, Qualification qualification);
+        void UpdateQualification(Guid studentId, int Id, Qualification updatedQualification);
+
+        void AddExperience(Guid studentId, Experience experience);
+        void UpdateExperience(Guid studentId, int Id, Experience updatedExperience);
+
+        void SaveChanges();
+        void AddStudent(AddStudentDto student);
     }
 }
