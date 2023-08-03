@@ -28,5 +28,25 @@ namespace StudentEmploymentPortalAPI.Repository
         {
             return _context.Departments.Include(d => d.Faculty).ToList();
         }
+
+        public IEnumerable<YearOfStudy> GetYearOfStudy()
+        {
+            return _context.YearOfStudy.ToList();
+        }
+
+        public IEnumerable<Gender> GetGender()
+        {
+            return _context.Genders.ToList();
+        }
+
+        public IEnumerable<Race> GetRace()
+        {
+            return _context.Races.ToList();
+        }
+
+        public IEnumerable<DriversLicense> GetDriversLicense()
+        {
+            return _context.DriversLicenses.ToList();
+        }
     }
 }

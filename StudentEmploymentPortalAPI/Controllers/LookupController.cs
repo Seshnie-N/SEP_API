@@ -20,5 +20,29 @@ namespace StudentEmploymentPortalAPI.Controllers
         {
             return Ok(_lookupRepository.GetDepartmentWithFaculty());
         }
+
+        [HttpGet("YearOfStudy")]
+        public IActionResult GetYearOfStudy()
+        {
+            return Ok(_lookupRepository.GetYearOfStudy());
+        }
+
+        [HttpGet("Genders")]
+        public IActionResult GetGender()
+        {
+            return Ok(_lookupRepository.GetGender());
+        }
+
+        [HttpGet("Races")]
+        public IActionResult GetRace()
+        {
+            return Ok(_lookupRepository.GetRace());
+        }
+
+        [HttpGet("DriversLicense")]
+        public IActionResult GetDriversLicense()
+        {
+            return Ok(_lookupRepository.GetDriversLicense());
+        }
     }
 }
