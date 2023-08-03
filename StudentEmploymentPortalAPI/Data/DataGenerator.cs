@@ -83,6 +83,7 @@ namespace SEP.Data
 
         private List<Employer> fakeEmployers = new List<Employer>();
         private List<JobPost> fakeJobPosts = new List<JobPost>();
+       
 
         private List<JobPost> GetJobPosts(Guid empId)
         {
@@ -94,24 +95,21 @@ namespace SEP.Data
 
         public void GenerateFakerData()
         {
+            //employers and job posts
             var empGen = GetEmployerGenerator();
             var employers = empGen.Generate(10);
             fakeEmployers.AddRange(employers);
 
             foreach (var emp in fakeEmployers)
-            {
                 if (!_context.Employers.Any(e => e.Id == emp.Id))
-                {
                     _context.Employers.Add(emp);
-                }
-            }
+
             foreach (var post in fakeJobPosts)
-            {
                 if (!_context.JobPosts.Any(p => p.Id == post.Id))
-                {
                     _context.JobPosts.Add(post);
-                }
-            }
+
+            //students
+
 
             _context.SaveChanges();
         }
