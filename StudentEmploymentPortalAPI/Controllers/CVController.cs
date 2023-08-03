@@ -28,12 +28,13 @@ namespace StudentEmploymentPortalAPI.Controllers
         [HttpPost("AddStudent/{Student}")]
         [ProducesResponseType(201, Type = typeof(Student))]
         [ProducesResponseType(400)]
-        public IActionResult AddStudent(Student student)
+        public IActionResult AddStudent(AddStudentDto studentDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            var student = _mapper.Map<Student>(studentDto);
 
             // Here, you would perform any additional validation or business logic as needed.
             // For example, checking if the provided IdNumber or Email already exists, etc.

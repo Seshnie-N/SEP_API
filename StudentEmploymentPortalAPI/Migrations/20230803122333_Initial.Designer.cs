@@ -12,8 +12,8 @@ using StudentEmploymentPortalAPI.Data;
 namespace StudentEmploymentPortalAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230801101141_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230803122333_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1137,35 +1137,29 @@ namespace StudentEmploymentPortalAPI.Migrations
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.Experience", b =>
                 {
-                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", "Student")
+                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", null)
                         .WithMany("Experiences")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.Qualification", b =>
                 {
-                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", "Student")
+                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", null)
                         .WithMany("Qualifications")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.Referee", b =>
                 {
-                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", "Student")
+                    b.HasOne("StudentEmploymentPortalAPI.Models.DomainModels.Student", null)
                         .WithMany("Referees")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("StudentEmploymentPortalAPI.Models.DomainModels.ApplicationUser", b =>
