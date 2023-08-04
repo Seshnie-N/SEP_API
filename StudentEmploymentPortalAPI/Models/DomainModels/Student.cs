@@ -28,7 +28,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         [ValidateNever]
         public Race? Race { set; get; }
         public bool IsSouthAfrican { get; set; }
-        public int NationalityId { get; set; }
+        public int? NationalityId { get; set; }
         [ValidateNever]
         public Nationality? Nationality { set; get; }
         public int YearOfStudyId { get; set; }

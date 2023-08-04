@@ -21,31 +21,31 @@ namespace StudentEmploymentPortalAPI.Validation
                 {
                     case "DriversLicence":
                        if (dbContext.DriversLicenses.Find(id) == null)
-                            return new ValidationResult("Invalid Id");
+                            return new ValidationResult("Invalid DriversLicenseId");
                         break;
                     case "Gender":
                         if (dbContext.Genders.Find(id) == null)
-                            return new ValidationResult("Invalid Id");
+                            return new ValidationResult("Invalid GenderId");
                         break;
                     case "Race":
                         if (dbContext.Races.Find(id) == null)
-                            return new ValidationResult("Invalid Id");
+                            return new ValidationResult("Invalid RaceId");
                         break;
                     case "Nationality":
                         if (dbContext.Nationalities.Find(id) == null)
-                            return new ValidationResult("Invalid Id");
+                            return new ValidationResult("Invalid NationalityId");
                         break;
                     case "YearOfStudy":
                         if (dbContext.YearOfStudy.Find(id) == null)
-                            return new ValidationResult("Invalid Id");
+                            return new ValidationResult("Invalid YearOfStudyId");
                         break;
                     case "Department":
                         if (dbContext.Departments.Find(id) == null)
-                            return new ValidationResult("Invalid Id");
+                            return new ValidationResult("Invalid DepartmentId");
                         break;
                     case "ApplicationStatus":
                         if (dbContext.ApplicationStatuses.Find(id) == null)
-                            return new ValidationResult("Invalid Id");
+                            return new ValidationResult("Invalid ApplicationStatusId");
                         break;
                 }
             }

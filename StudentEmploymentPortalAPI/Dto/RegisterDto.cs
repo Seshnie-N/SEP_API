@@ -6,9 +6,11 @@ namespace StudentEmploymentPortalAPI.Dto
 {
     public class RegisterDto : LoginDto
     {
-        [Required(ErrorMessage = "First name is required")]
+        [Required(ErrorMessage = "Please enter your first name.")]
+        [RegularExpression("^[^\\d]*$", ErrorMessage = "Invalid characters in field.")]
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "Last name is required")]
+        [Required(ErrorMessage = "Please enter your last name.")]
+        [RegularExpression("^[^\\d]*$", ErrorMessage = "Invalid characters in field.")]
         public string LastName { get; set; }
         [Required(ErrorMessage = "Phone number is required")]
         [RegularExpression("^(\\+27|0)[6-8][0-9]{8}$", ErrorMessage = "Invalid phone number")]
@@ -16,8 +18,9 @@ namespace StudentEmploymentPortalAPI.Dto
         public string? Address { set; get; }
 
         [Required(ErrorMessage = "Please enter your ID number")]
-        [RegularExpression("(([0-9]{2})(0|1)([0-9])([0-3])([0-9]))([ ]?)(([ 0-9]{4})([ ]?)([ 0-1][8]([ ]?)[ 0-9]))", ErrorMessage = "Invalid ID number")]
-        public string? IdNumber { set; get; }
+        /*[RegularExpression("(([0-9]{2})(0|1)([0-9])([0-3])([0-9]))([ ]?)(([ 0-9]{4})([ ]?)([ 0-1][8]([ ]?)[ 0-9]))", ErrorMessage = "Invalid ID number")]*/
+        [SAIdentityNumber]
+        public string IdNumber { set; get; }
         [DisplayName("DriversLicense")]
         [ForeignKeyCheck]
         public int DriversLicenseId { get; set; }
@@ -31,7 +34,7 @@ namespace StudentEmploymentPortalAPI.Dto
         [Required(ErrorMessage = "Please select a nationality option")]
         [DisplayName("Nationality")]
         [ForeignKeyCheck]
-        public int NationalityId { get; set; }
+        public int? NationalityId { get; set; }
         [DisplayName("YearOfStudy")]
         [ForeignKeyCheck]
         public int YearOfStudyId { get; set; }
