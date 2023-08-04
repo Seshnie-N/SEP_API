@@ -12,7 +12,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         public string FileType { get; set; }
         public string Extension { get; set; }
         public string Description { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? UploadDate { get; set; }
         public string FilePath { get; set; }
         [ForeignKey(nameof(Application))]
        public Guid StudentApplicationId { get; set; }
