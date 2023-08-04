@@ -123,7 +123,8 @@ namespace StudentEmploymentPortalAPI.Controllers
                             {
                                 StudentApplicationId = ApplicationId,
                                 Name = DocumentName[i],
-                                FilePath = uniqueFileName
+                                FilePath = uniqueFileName,
+                                UploadDate = DateTime.Now
                             };
 
                             if (!_applicationRepository.AddDocument(applicationDocument))
