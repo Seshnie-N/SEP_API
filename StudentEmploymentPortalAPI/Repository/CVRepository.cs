@@ -197,19 +197,26 @@ namespace StudentEmploymentPortalAPI.Repository
 
         public IList<Qualification> GetQualifications(Guid studentId)
         {
-            var qualifications = _dbContext.Qualifications.Where(x => x.StudentId == studentId.ToString()).ToList();
+           var qualifications = _dbContext.Qualifications
+                                .Where(x => x.StudentId == studentId.ToString() && x.IsAvailable == true)
+                                .ToList();
+
             return qualifications;
         }
 
         public IList<Experience> GetExperiences(Guid studentId)
         {
-            var experiences = _dbContext.Experiences.Where(x => x.StudentId == studentId.ToString()).ToList();
+            var experiences = _dbContext.Experiences
+                                .Where(x => x.StudentId == studentId.ToString() && x.IsAvailable == true)
+                                .ToList();
             return experiences;
         }
 
         public IList<Referee> GetReferees(Guid studentId)
         {
-            var referees = _dbContext.Referees.Where(x => x.StudentId == studentId.ToString()).ToList();
+           var referees = _dbContext.Referees
+                                .Where(x => x.StudentId == studentId.ToString() && x.IsAvailable == true)
+                                .ToList();
             return referees;
         }
 
@@ -231,6 +238,51 @@ namespace StudentEmploymentPortalAPI.Repository
                         .SingleOrDefault(x => x.UserId == studentId.ToString());
 
             return student;
+        }
+
+        public void WithdrawQualification(int QualificationId)
+        {
+           var qualification = _dbContext.Qualifications.SingleOrDefault(q => q.Id == QualificationId );
+            if (qualification == null)
+            {
+                throw new ArgumentException($"Qualification with ID {QualificationId} not found.");
+            }
+
+            // Update qualification properties here
+            qualification.IsAvailable = false;
+            
+
+            _dbContext.Qualifications.Update(qualification);
+            _dbContext.SaveChanges();
+                
+        }
+
+        public void WithdrawExperience(int ExperienceId)
+        {
+             var Experience = _dbContext.Experiences.SingleOrDefault(q => q.Id == ExperienceId );
+            if (Experience == null)
+            {
+                throw new ArgumentException($"Experience with ID {ExperienceId} not found.");
+            }
+
+            Experience.IsAvailable = false;
+            
+            _dbContext.Experiences.Update(Experience);
+            _dbContext.SaveChanges();
+        }
+
+        public void WithdrawReferee(int RefereeId)
+        {
+            var Referee = _dbContext.Referees.SingleOrDefault(q => q.Id == RefereeId );
+            if (Referee == null)
+            {
+                throw new ArgumentException($"Referee with ID {RefereeId} not found.");
+            }
+
+            Referee.IsAvailable = false;
+            
+            _dbContext.Referees.Update(Referee);
+            _dbContext.SaveChanges();
         }
     }
 }

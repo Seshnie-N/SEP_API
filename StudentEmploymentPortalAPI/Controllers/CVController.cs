@@ -98,6 +98,22 @@ namespace StudentEmploymentPortalAPI.Controllers
             }
         }
 
+         [HttpPut("WithdrawReferee/{RefereeId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult WithdrawReferee(int RefereeId)
+        {
+            try
+            {
+                _CVRepository.WithdrawReferee(RefereeId);
+                return Content("Referee Withdrawn Successfully");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //#Qualification
 
         // POST: api/Students/AddQualification/{studentId}
@@ -127,6 +143,21 @@ namespace StudentEmploymentPortalAPI.Controllers
             {
                 _CVRepository.UpdateQualification(studentId, qualificationId, qualification);
                 return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("WithdrawQualification/{qualificationId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult WithdrawQualification(int qualificationId)
+        {
+            try
+            {
+                _CVRepository.WithdrawQualification(qualificationId);
+                return Content("Qualification withdrawn Successfully");
             }
             catch (ArgumentException ex)
             {
@@ -163,6 +194,22 @@ namespace StudentEmploymentPortalAPI.Controllers
             {
                 _CVRepository.UpdateExperience(studentId, experienceId, experience);
                 return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+         [HttpPut("WithdrawExperience/{ExperienceId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult WithdrawExperience(int ExperienceId)
+        {
+            try
+            {
+                _CVRepository.WithdrawExperience(ExperienceId);
+                return Content("Experience Withdrawn Successfully");
             }
             catch (ArgumentException ex)
             {

@@ -9,8 +9,11 @@ namespace StudentEmploymentPortalAPI.Interfaces
         Student GetStudentProfile(Guid StudentId);
         Student GetCV(Guid StudentId);
         Qualification GetQualification(int QualificationId);
+        void WithdrawQualification(int QualificationId);
         Experience GetExperience(int ExperienceId);
+        void WithdrawExperience(int ExperienceId);
         Referee GetReferee(int RefereeId);
+        void WithdrawReferee(int RefereeId);
 
 
         //Lists

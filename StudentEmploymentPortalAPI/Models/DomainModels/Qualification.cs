@@ -25,6 +25,13 @@ namespace StudentEmploymentPortalAPI.Models
         public string? Majors { get; set; }
         public string? SubMajors { get; set; }
         public string? Research { get; set; }
-        //public bool? IsAvailable { get; set; }
+
+        public bool? IsAvailable { get; set; }
+       
+       public Qualification()
+        {
+           
+            IsAvailable = true; 
     }
+}
 }
