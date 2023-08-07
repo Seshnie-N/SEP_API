@@ -22,5 +22,12 @@ namespace StudentEmploymentPortalAPI.Models
         [Required(ErrorMessage = "Please provide a job title.")]
         public string JobTitle { get; set; }
         public string TasksAndResponsibilities { get; set; }
+        public bool? IsAvailable { get; set; }
+
+         public Experience()
+        {
+           
+            IsAvailable = true; 
+    }
     }
 }

@@ -99,6 +99,22 @@ namespace StudentEmploymentPortalAPI.Controllers
             }
         }
 
+         [HttpPut("WithdrawReferee/{RefereeId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult WithdrawReferee(int RefereeId)
+        {
+            try
+            {
+                _CVRepository.WithdrawReferee(RefereeId);
+                return Content("Referee Withdrawn Successfully");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //#Qualification
 
         // POST: api/Students/AddQualification/{studentId}
@@ -128,6 +144,21 @@ namespace StudentEmploymentPortalAPI.Controllers
             {
                 _CVRepository.UpdateQualification(studentId, qualificationId, qualification);
                 return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("WithdrawQualification/{qualificationId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult WithdrawQualification(int qualificationId)
+        {
+            try
+            {
+                _CVRepository.WithdrawQualification(qualificationId);
+                return Content("Qualification withdrawn Successfully");
             }
             catch (ArgumentException ex)
             {
@@ -171,17 +202,47 @@ namespace StudentEmploymentPortalAPI.Controllers
             }
         }
 
+         [HttpPut("WithdrawExperience/{ExperienceId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult WithdrawExperience(int ExperienceId)
+        {
+            try
+            {
+                _CVRepository.WithdrawExperience(ExperienceId);
+                return Content("Experience Withdrawn Successfully");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //Get Methods
 
 
         //GET: api/Student/
+        [HttpGet("Get Student CV")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Student>))]
+        public IActionResult GetCV(Guid StudentId)
+        {
+
+
+            var Student = _CVRepository.GetCV(StudentId);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var studentCVDto = _mapper.Map<Student, StudentCVDto>(Student);
+
+            return Ok(studentCVDto);
+        }
         [HttpGet("Get Student profile")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Student>))]
         public IActionResult GetStudent(Guid StudentId)
         {
 
 
-            var Student = _CVRepository.GetStudent(StudentId);
+            var Student = _CVRepository.GetStudentProfile(StudentId);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -199,7 +260,9 @@ namespace StudentEmploymentPortalAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(Qualifications);
+
+            var qualificationsDto = _mapper.Map<IEnumerable<Qualification>, IEnumerable<QualificationsDto>>(Qualifications);
+            return Ok(qualificationsDto);
         }
 
         //GET: api/Qualification/
@@ -223,7 +286,9 @@ namespace StudentEmploymentPortalAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(Experiences);
+            var ExperiencesDto = _mapper.Map<IEnumerable<Experience>, IEnumerable<ExperiencesDto>>(Experiences);
+
+            return Ok(ExperiencesDto);
         }
         //GET: api/Experience/
         [HttpGet("Get Experience")]
@@ -247,7 +312,9 @@ namespace StudentEmploymentPortalAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(Referees);
+            var RefereesDto = _mapper.Map<IEnumerable<Referee>, IEnumerable<RefereesDto>>(Referees);
+
+            return Ok(RefereesDto);
         }
 
         //GET: api/Referee/

@@ -25,5 +25,13 @@ namespace StudentEmploymentPortalAPI.Models
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid Email Address")]
         [Required(ErrorMessage = "Please provide an email address for the referee.")]
         public string Email { get; set; }
+
+         public bool? IsAvailable { get; set; }
+
+         public Referee()
+        {
+           
+            IsAvailable = true; 
+    }
     }
 }

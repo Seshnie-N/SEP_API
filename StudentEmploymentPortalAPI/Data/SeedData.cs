@@ -507,6 +507,7 @@ namespace SEP.Data
                             EndDate = DateTime.Today.AddDays(30),
                             JobTitle = "Software Developer",
                             TasksAndResponsibilities = "Developed and maintained software applications"
+                            
                         }
                     };
                     var qualifications = new List<Qualification>
