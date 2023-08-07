@@ -78,19 +78,36 @@ namespace StudentEmploymentPortalAPI.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            /*File/Files have been uploaded with the application*/
+            //begin test pdf
+            string pdfFilePath = @"C:\Users\A0079419\OneDrive - University of Witwatersrand\Documents\Test.pdf";
+            byte[] pdfBytes = System.IO.File.ReadAllBytes(pdfFilePath);
+
+            IFormFile pdfFile = new FormFile(new MemoryStream(pdfBytes), 0, pdfBytes.Length, "pdfFile", "Test.pdf");
+            List<IFormFile> files = new List<IFormFile>();
+            files.Add(pdfFile);
+            List<string> documentNames = new List<string>();
+            documentNames.Add("Test");
+
+            application = _applicationRepository.GetApplications()
+                .Where(c => c.JobPostId == applicationDto.JobPostId && c.StudentId == userId)
+                .FirstOrDefault();
+
+            AddApplicationDocument(files, documentNames, application.Id);
+            //end test pdf
+            
+            /*File/Files have been uploaded with the application*//*
             if (applicationDto.Files != null && applicationDto.Files.Count > 0) 
             {
                 application = _applicationRepository.GetApplications()
                 .Where(c => c.JobPostId == applicationDto.JobPostId && c.StudentId == userId)
                 .FirstOrDefault();
 
-                if (application != null) /*application exists and we can link the uploaded documents with it*/
+                if (application != null) *//*application exists and we can link the uploaded documents with it*//*
                 {
                     AddApplicationDocument(applicationDto.Files, applicationDto.DocumentName, application.Id);
                 }
-            }
-
+            }*/
+            
             return Ok("Successfully created");
         }
 

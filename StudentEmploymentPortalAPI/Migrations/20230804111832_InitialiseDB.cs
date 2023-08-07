@@ -636,7 +636,7 @@ namespace StudentEmploymentPortalAPI.Migrations
                     FileType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Extension = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UploadDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },

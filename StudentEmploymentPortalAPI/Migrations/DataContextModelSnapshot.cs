@@ -217,9 +217,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -242,6 +239,9 @@ namespace StudentEmploymentPortalAPI.Migrations
 
                     b.Property<Guid>("StudentApplicationId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UploadDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

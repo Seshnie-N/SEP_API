@@ -12,7 +12,7 @@ using StudentEmploymentPortalAPI.Data;
 namespace StudentEmploymentPortalAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230802095024_InitialiseDB")]
+    [Migration("20230804111832_InitialiseDB")]
     partial class InitialiseDB
     {
         /// <inheritdoc />
@@ -220,9 +220,6 @@ namespace StudentEmploymentPortalAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -245,6 +242,9 @@ namespace StudentEmploymentPortalAPI.Migrations
 
                     b.Property<Guid>("StudentApplicationId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UploadDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
