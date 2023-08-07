@@ -2,6 +2,7 @@
 using StudentEmploymentPortalAPI.Data;
 using StudentEmploymentPortalAPI.Models;
 using StudentEmploymentPortalAPI.Models.DomainModels;
+using StudentEmploymentPortalAPI.Services;
 
 namespace SEP.Data
 {
@@ -547,6 +548,44 @@ namespace SEP.Data
             //Faker data
             var dataGenerator = scope.ServiceProvider.GetRequiredService<DataGenerator>();
             dataGenerator.GenerateFakerData();
+
+            var fakeStudents = dataGenerator.fakeStudents;
+            foreach (var user in fakeStudents)
+            {
+                var applicationUser = new ApplicationUser
+                {
+                    UserName = user.Email,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                };
+                var result = await userManager.CreateAsync(applicationUser, user.Password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(applicationUser, "User");
+                    var userId = await userManager.GetUserIdAsync(applicationUser);
+                    var student = new Student
+                    {
+                        UserId = userId,
+                        Address = user.Address,
+                        IdNumber = user.IdNumber,
+                        DriversLicenseId = user.DriversLicenseId,
+                        CareerObjective = user.CareerObjective,
+                        GenderId = user.GenderId,
+                        RaceId = user.RaceId,
+                        NationalityId = user.NationalityId,
+                        IsSouthAfrican = user.IsSouthAfrican,
+                        YearOfStudyId = user.YearOfStudyId,
+                        DepartmentId = user.DepartmentId,
+                        Skills = user.Skills,
+                        Achievements = user.Achievements,
+                        Interests = user.Interests
+                    };
+                    context.Students.Add(student);
+                    context.SaveChanges();
+                }
+            }
 
             return app;
         }

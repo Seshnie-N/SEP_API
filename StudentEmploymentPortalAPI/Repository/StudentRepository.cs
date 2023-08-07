@@ -19,7 +19,7 @@ namespace StudentEmploymentPortalAPI.Repository
 
         public void Create(string userId, RegisterDto user)
         {
-            bool isSA = _context.Nationalities.Where(n => n.Id == user.NationalityId).Select(n => n.Name).FirstOrDefault() == "South African";
+            /*bool isSA = _context.Nationalities.Where(n => n.Id == user.NationalityId).Select(n => n.Name).FirstOrDefault() == "South African";*/
             var student = new Student
             {
                 UserId = userId,
@@ -30,7 +30,7 @@ namespace StudentEmploymentPortalAPI.Repository
                 GenderId = user.GenderId,
                 RaceId = user.RaceId,
                 NationalityId = user.NationalityId,
-                IsSouthAfrican = isSA,
+                IsSouthAfrican = user.IsSouthAfrican,
                 YearOfStudyId = user.YearOfStudyId,
                 DepartmentId = user.DepartmentId,
                 Skills = user.Skills,
@@ -39,17 +39,6 @@ namespace StudentEmploymentPortalAPI.Repository
             };
             _context.Students.Add(student);
             _context.SaveChanges();
-        }
-
-        public ICollection<Student> GetStudents()
-        {
-            return _context.Students.Include("DriversLicense")
-                .Include("Gender")
-                .Include("Race")
-                .Include("Nationality")
-                .Include("YearOfStudy")
-                .Include("Department")
-                .ToList();
         }
 
         public Student GetStudent(string userId)

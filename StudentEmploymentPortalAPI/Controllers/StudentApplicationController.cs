@@ -72,7 +72,7 @@ namespace StudentEmploymentPortalAPI.Controllers
             return Ok("Successfully created");
         }
 
-        [HttpGet()]
+        [HttpGet("ApplicationHistory")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<ApplicationResponseDto>))]
         public IActionResult GetApplications()

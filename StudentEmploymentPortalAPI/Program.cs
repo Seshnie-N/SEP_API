@@ -74,6 +74,16 @@ namespace StudentEmploymentPortalAPI
                 };
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(option =>
@@ -109,6 +119,8 @@ namespace StudentEmploymentPortalAPI
             //Seed Data
             if (args.Length == 1 && args[0].ToLower() == "seeddata")
                 await app.SeedDataAsync();
+
+            app.UseCors(); // Add this line to enable CORS
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

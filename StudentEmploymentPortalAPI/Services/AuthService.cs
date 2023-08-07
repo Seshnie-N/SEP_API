@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using StudentEmploymentPortalAPI.Dto;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -25,7 +22,7 @@ namespace StudentEmploymentPortalAPI.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<bool> Register(RegisterDto user)
+        public async Task<IdentityResult> Register(RegisterDto user)
         {
             var applicationUser = new ApplicationUser
             {
@@ -37,21 +34,19 @@ namespace StudentEmploymentPortalAPI.Services
             };
             var result = await _userManager.CreateAsync(applicationUser, user.Password);
             if (result.Succeeded)
-            {                
+            {
                 await _userManager.AddToRoleAsync(applicationUser, "User");
                 _studentRepository.Create(await _userManager.GetUserIdAsync(applicationUser), user);
-                return true;
             }
-            return false;
+            return result;
         }
 
         public async Task<bool> Login(LoginDto user)
         {
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             if (applicationUser == null)
-            {
                 return false;
-            }
+        
             return await _userManager.CheckPasswordAsync(applicationUser, user.Password);
         }
 

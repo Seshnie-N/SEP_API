@@ -7,6 +7,5 @@ namespace StudentEmploymentPortalAPI.Interfaces
     {
         void Create(string userId, RegisterDto user);
         Student GetStudent(string userId);
-        ICollection<Student> GetStudents();
     }
 }

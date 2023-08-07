@@ -17,32 +17,34 @@ namespace StudentEmploymentPortalAPI.Controllers
         }
 
         [HttpPost("Register")]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Register(RegisterDto user)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
-            if (await _authService.Register(user)) 
-            {
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            return BadRequest();
+
+            var result = await _authService.Register(user);
+            if (result.Succeeded) 
+                return Ok("Registration successful");
+
+            return BadRequest(result);
         }
 
         [HttpPost("Login")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Login(LoginDto user) 
         { 
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
+
             if (await _authService.Login(user))
             {
                 var tokenString = await _authService.GenerateTokenAsync(user);
                 return Ok(new { token = tokenString });
             }
+
             return Unauthorized();
         }
     }

@@ -23,23 +23,29 @@ namespace StudentEmploymentPortalAPI.Dto
         public string IdNumber { set; get; }
         [DisplayName("DriversLicense")]
         [ForeignKeyCheck]
+        [DefaultValue(1)]
         public int DriversLicenseId { get; set; }
         public string? CareerObjective { set; get; }
         [DisplayName("Gender")]
         [ForeignKeyCheck]
+        [DefaultValue(1)]
         public int GenderId { get; set; }
         [DisplayName("Race")]
         [ForeignKeyCheck]
+        [DefaultValue(1)]
         public int RaceId { get; set; }
-        [Required(ErrorMessage = "Please select a nationality option")]
+        public bool IsSouthAfrican { get; set; }
         [DisplayName("Nationality")]
+        [DefaultValue(1)]
         [ForeignKeyCheck]
         public int? NationalityId { get; set; }
         [DisplayName("YearOfStudy")]
         [ForeignKeyCheck]
+        [DefaultValue(1)]
         public int YearOfStudyId { get; set; }
         [DisplayName("Department")]
         [ForeignKeyCheck]
+        [DefaultValue(1)]
         public int DepartmentId { get; set; }
         public string? Skills { set; get; }
         public string? Achievements { set; get; }

@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentEmploymentPortalAPI.Dto;
 using StudentEmploymentPortalAPI.Interfaces;
-using StudentEmploymentPortalAPI.Models.DomainModels;
-using System.Net;
 using System.Security.Claims;
 
 namespace StudentEmploymentPortalAPI.Controllers
@@ -22,11 +20,12 @@ namespace StudentEmploymentPortalAPI.Controllers
             _jobPostRepository = jobPostRepository;
             _mapper = mapper;
         }
+
         // GET: api/JobPosts
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<JobPostDto>))]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<ActionResult> GetJobPosts()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<ICollection<JobPostDto>>> GetJobPosts()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var posts = await _jobPostRepository.GetJobPostsAsync(userId);
@@ -37,9 +36,9 @@ namespace StudentEmploymentPortalAPI.Controllers
 
         // GET api/JobPosts/5
         [HttpGet("{postId}")]
-        [ProducesResponseType(200, Type = typeof(JobPostDto))]
-        [ProducesResponseType(404)]
-        public ActionResult GetJobPost(Guid postId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<JobPostDto> GetJobPost(Guid postId)
         {
             if (!_jobPostRepository.JobPostExists(postId))
                 return NotFound();
