@@ -9,46 +9,14 @@ namespace StudentEmploymentPortalAPI.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<JobPost, JobPostDto>();
-            CreateMap<DriversLicense, DriversLicenseDto>();
-            CreateMap<Gender, GenderDto>();
-            CreateMap<Race, RaceDto>();
-            CreateMap<Nationality, NationalityDto>();
-            CreateMap<YearOfStudy, YearOfStudyDto>();
 
-            // Exclude the 'Id' property in the 'Faculty' object when mapping to 'FacultyDto'
-            CreateMap<Faculty, FacultyDto>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+//ApplicationUser
+            CreateMap<ApplicationUser, ApplicationUserDto>();
+            CreateMap<ApplicationUserDto, ApplicationUser>(); 
 
-            CreateMap<Qualification, QualificationsDto>();
-            CreateMap<Qualification, CVQualificationsDto>();
-
-            CreateMap<Referee, RefereesDto>();
-            CreateMap<Referee, CVRefereesDto>();
-
-            CreateMap<Experience, ExperiencesDto>();
-            CreateMap<Experience, CVExperiencesDto>();
-
-            CreateMap<Department, DepartmentDto>();
-
-            // Combine both mappings for Student to StudentCVDto
-            CreateMap<Student, StudentCVDto>()
-    .ForMember(dest => dest.User, opt => opt.MapFrom(src => new CVApplicationUserDto
-    {
-        FirstName = src.User.FirstName,
-        LastName = src.User.LastName,
-        Email = src.User.UserName
-    }))
-    .ForMember(dest => dest.Department, opt => opt.MapFrom(src => new CVDepartmentDto
-    {
-        Name = src.Department.Name,
-        Faculty = new FacultyDto // Create FacultyDto instance here
-        {
-            Name = src.Department.Faculty.Name // Assuming Faculty has a Name property
-        }
-    }));
-
-            // Mapping for Student to StudentProfileDto
+//Students
+            CreateMap<UpdateStudentProfileDto, Student>();
+            CreateMap<StudentProfileDto, Student>();
             CreateMap<Student, StudentProfileDto>()
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => new ApplicationUserDto
                 {
@@ -56,16 +24,66 @@ namespace StudentEmploymentPortalAPI.Helper
                     FirstName = src.User.FirstName,
                     LastName = src.User.LastName,
                     Email = src.User.UserName
-                }))
-                .ForMember(dest => dest.Department, opt => opt.MapFrom(src => new DepartmentDto
-                {
-                    Id = src.Department.Id,
-                    Name = src.Department.Name,
-                    Faculty = src.Department.Faculty,
                 }));
+                // .ForMember(dest => dest.Department, opt => opt.MapFrom(src => new DepartmentDto
+                // {
+                //     Id = src.Department.Id,
+                //     Name = src.Department.Name,
+                //     Faculty = src.Department.Faculty,
+                // }));
+            
+             CreateMap<Student, StudentCVDto>()
+            .ForMember(dest => dest.User, opt => opt.MapFrom(src => new CVApplicationUserDto
+            {
+                FirstName = src.User.FirstName,
+                LastName = src.User.LastName,
+                Email = src.User.UserName
+            }))
+            .ForMember(dest => dest.Department, opt => opt.MapFrom(src => new CVDepartmentDto
+            {
+                Name = src.Department.Name,
+                Faculty = new FacultyDto
+                {
+                    Name = src.Department.Faculty.Name 
+                }
+            }));
 
-            CreateMap<ApplicationUser, ApplicationUserDto>();
-            CreateMap<ApplicationUserDto, ApplicationUser>(); // Add this mapping
+
+//Qualifications
+
+            CreateMap<AddQualificationDto, Qualification>();
+            CreateMap<Qualification, QualificationDto>();
+            CreateMap<QualificationDto, Qualification>();
+            CreateMap<Qualification, QualificationsDto>();
+            CreateMap<Qualification, CVQualificationsDto>();
+
+ //Experiences          
+
+            CreateMap<AddExperienceDto, Experience>();
+            CreateMap<ExperienceDto, Experience>();
+            CreateMap<Experience, ExperienceDto>();
+            CreateMap<Experience, ExperiencesDto>();
+            CreateMap<Experience, CVExperiencesDto>();
+
+//Referees
+
+            CreateMap<AddRefereeDto, Referee>();
+            CreateMap<RefereeDto, Referee>();
+            CreateMap<Referee, RefereeDto>();
+            CreateMap<Referee, RefereesDto>();
+            CreateMap<Referee, CVRefereesDto>();
+
+//Others
+
+            CreateMap<DriversLicense, DriversLicenseDto>();
+            CreateMap<Gender, GenderDto>();
+            CreateMap<Race, RaceDto>();
+            CreateMap<Nationality, NationalityDto>();
+            CreateMap<YearOfStudy, YearOfStudyDto>(); 
+            CreateMap<Department, DepartmentDto>();
+            CreateMap<Faculty, FacultyDto>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+           
         }
     }
 }

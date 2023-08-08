@@ -26,10 +26,8 @@ namespace StudentEmploymentPortalAPI
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;//cycles will just show null
             }); ;
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-            builder.Services.AddScoped<IJobPostRepository, JobPostRepository>();
             builder.Services.AddScoped<ILookupRepository, LookupRepository>();
-            builder.Services.AddScoped<ICVRepository, CVRepository>();
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddTransient<DataGenerator>();
            

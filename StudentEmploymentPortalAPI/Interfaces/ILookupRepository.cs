@@ -1,4 +1,5 @@
-﻿using StudentEmploymentPortalAPI.Models;
+﻿using StudentEmploymentPortalAPI.Dto;
+using StudentEmploymentPortalAPI.Models;
 
 namespace StudentEmploymentPortalAPI.Interfaces
 {
@@ -8,6 +9,7 @@ namespace StudentEmploymentPortalAPI.Interfaces
         IEnumerable<Department> GetDepartments();
         IEnumerable<Department> GetDepartmentWithFaculty();
 
+        LookupDataDto GetLookupData();
         //Endpoint to fetch all lookups for student profile
         //Race
         //Nationality

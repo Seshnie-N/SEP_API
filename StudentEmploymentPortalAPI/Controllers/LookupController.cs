@@ -20,5 +20,11 @@ namespace StudentEmploymentPortalAPI.Controllers
         {
             return Ok(_lookupRepository.GetDepartmentWithFaculty());
         }
+
+         [HttpGet("LookupData")]
+        public IActionResult GetLookupData() 
+        {
+            return Ok(_lookupRepository.GetLookupData());
+        }
     }
 }
