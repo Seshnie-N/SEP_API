@@ -9,6 +9,7 @@ namespace StudentEmploymentPortalAPI.Interfaces
         bool Save();
         ICollection<StudentApplication> GetApplications();
         bool AddDocument(ApplicationDocument document);
+        IQueryable<StudentApplication> GetApplicationsQueryable();
         //StudentApplication GetCategory(int id);
     }
 }

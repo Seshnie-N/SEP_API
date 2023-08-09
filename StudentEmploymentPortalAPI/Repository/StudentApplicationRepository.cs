@@ -2,6 +2,7 @@
 using StudentEmploymentPortalAPI.Data;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
+using System.Data.Entity;
 
 namespace StudentEmploymentPortalAPI.Repository
 {
@@ -15,6 +16,10 @@ namespace StudentEmploymentPortalAPI.Repository
         public ICollection<StudentApplication> GetApplications()
         {
             return _context.Applications.ToList();
+        }
+        public IQueryable<StudentApplication> GetApplicationsQueryable()
+        {
+            return _context.Applications;
         }
         public bool CreateApplication(StudentApplication application)
         {

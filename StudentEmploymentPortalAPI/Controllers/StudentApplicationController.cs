@@ -43,7 +43,10 @@ namespace StudentEmploymentPortalAPI.Controllers
         [HttpPost("CreateApplication", Name = "CreateApplication")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateApplication([FromBody] ApplicationDto applicationDto)
+        /*[Consumes("multipart/form-data", new string[] { "application/pdf", "image/jpg", "image/jpeg", "image/png", "image/tiff", "image/tif" })]*/
+        /*[Consumes("multipart/form-data", new[] { "text/html" })]*/
+        [Consumes("multipart/form-data")]
+        public IActionResult CreateApplication([FromForm] ApplicationDto applicationDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             
@@ -78,8 +81,8 @@ namespace StudentEmploymentPortalAPI.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            //begin test pdf
-            string pdfFilePath = @"C:\Users\A0079419\OneDrive - University of Witwatersrand\Documents\Test.pdf";
+            /*//begin test pdf
+            string pdfFilePath = @"C:\Users\Reece Lazarus\Downloads\ID.pdf";
             byte[] pdfBytes = System.IO.File.ReadAllBytes(pdfFilePath);
 
             IFormFile pdfFile = new FormFile(new MemoryStream(pdfBytes), 0, pdfBytes.Length, "pdfFile", "Test.pdf");
@@ -92,29 +95,62 @@ namespace StudentEmploymentPortalAPI.Controllers
                 .Where(c => c.JobPostId == applicationDto.JobPostId && c.StudentId == userId)
                 .FirstOrDefault();
 
-            AddApplicationDocument(files, documentNames, application.Id);
-            //end test pdf
+            //end test pdf*/
+
             
-            /*File/Files have been uploaded with the application*//*
-            if (applicationDto.Files != null && applicationDto.Files.Count > 0) 
+            //Begin processing and storing documents
+            var files = applicationDto.Files;
+            var fileNames = applicationDto.DocumentName;
+            /*Checking if file/files have been uploaded with the application*/
+            if (files != null && files.Count > 0 && fileNames != null && fileNames.Count > 0)
             {
                 application = _applicationRepository.GetApplications()
                 .Where(c => c.JobPostId == applicationDto.JobPostId && c.StudentId == userId)
                 .FirstOrDefault();
 
-                if (application != null) *//*application exists and we can link the uploaded documents with it*//*
+                if (application != null)
                 {
-                    AddApplicationDocument(applicationDto.Files, applicationDto.DocumentName, application.Id);
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        var file = files[i];
+                        if (file != null && file.Length > 0)
+                        {
+                            var uploadsPath = Path.Combine(_webHostEnvironment.WebRootPath, "Documents");
+                            var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                            var filePath = Path.Combine(uploadsPath, uniqueFileName);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                file.CopyToAsync(stream);
+                            }
+                            
+                            var applicationDocument = new ApplicationDocument
+                            {
+                                StudentApplicationId = application.Id,
+                                Name = fileNames[i],
+                                FilePath = uniqueFileName,
+                                UploadDate = DateTime.Now
+                            };
+
+                            if (!_applicationRepository.AddDocument(applicationDocument))
+                            {
+                                ModelState.AddModelError("", "Something went wrong while saving document/s.");
+                                return StatusCode(500, ModelState);
+                            }
+                        }
+                    }
+                    return Ok("Successfully created application and uploaded documents");
                 }
-            }*/
-            
-            return Ok("Successfully created");
+            }
+            //End processing and storing documents
+
+            return Ok("Application submitted successfully");
         }
 
         [HttpPost("AddApplicationDocument", Name = "AddApplicationDocument")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> AddApplicationDocument(List<IFormFile> files, List<string> DocumentName, Guid ApplicationId)
+        public IActionResult AddApplicationDocument(List<IFormFile> files, List<string> DocumentName, Guid ApplicationId)
         {
             if (files != null && files.Count > 0)
             {
@@ -129,17 +165,19 @@ namespace StudentEmploymentPortalAPI.Controllers
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            await file.CopyToAsync(stream);
+                            file.CopyToAsync(stream);
                         }
 
-                        var application = _applicationRepository.GetApplications().Where(c => c.Id == ApplicationId).FirstOrDefault();
+                        //StudentApplication? application = _applicationRepository.GetApplicationsQueryable().Where(a => a.Id == ApplicationId).FirstOrDefault();
+                        //var application = _applicationRepository.GetApplications().Where(c => c.Id == ApplicationId).FirstOrDefault();
 
-                        if (application != null)
-                        {
+                        //if (application != null)
+                        //{
                             var applicationDocument = new ApplicationDocument
                             {
                                 StudentApplicationId = ApplicationId,
                                 Name = DocumentName[i],
+                                //Description = Descriptions[i],
                                 FilePath = uniqueFileName,
                                 UploadDate = DateTime.Now
                             };
@@ -149,7 +187,7 @@ namespace StudentEmploymentPortalAPI.Controllers
                                 ModelState.AddModelError("", "Something went wrong while saving document/s.");
                                 return StatusCode(500, ModelState);
                             }
-                        }
+                        //}
                     }
                 }
 
