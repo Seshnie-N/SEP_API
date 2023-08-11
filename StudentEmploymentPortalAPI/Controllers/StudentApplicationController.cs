@@ -97,24 +97,7 @@ namespace StudentEmploymentPortalAPI.Controllers
                         var file = files[i];
                         if (file != null && file.Length > 0)
                         {
-                            var uploadsPath = Path.Combine(_webHostEnvironment.WebRootPath, "Documents");
-                            var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                            var filePath = Path.Combine(uploadsPath, uniqueFileName);
-
-                            using (var stream = new FileStream(filePath, FileMode.Create))
-                            {
-                                file.CopyToAsync(stream);
-                            }
-                            
-                            var applicationDocument = new ApplicationDocument
-                            {
-                                StudentApplicationId = application.Id,
-                                Name = fileNames[i],
-                                FilePath = uniqueFileName,
-                                UploadDate = DateTime.Now
-                            };
-
-                            if (!_applicationRepository.AddDocument(applicationDocument))
+                            if (!uploadDocument(file, application.Id, fileNames[i]))
                             {
                                 ModelState.AddModelError("", "Something went wrong while saving document/s.");
                                 return StatusCode(500, ModelState);
@@ -153,24 +136,7 @@ namespace StudentEmploymentPortalAPI.Controllers
                         var file = files[i];
                         if (file != null && file.Length > 0)
                         {
-                            var uploadsPath = Path.Combine(_webHostEnvironment.WebRootPath, "Documents");
-                            var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                            var filePath = Path.Combine(uploadsPath, uniqueFileName);
-
-                            using (var stream = new FileStream(filePath, FileMode.Create))
-                            {
-                                file.CopyToAsync(stream);
-                            }
-
-                            var applicationDocument = new ApplicationDocument
-                            {
-                                StudentApplicationId = application.Id,
-                                Name = fileNames[i],
-                                FilePath = uniqueFileName,
-                                UploadDate = DateTime.Now
-                            };
-
-                            if (!_applicationRepository.AddDocument(applicationDocument))
+                            if(!uploadDocument(file, application.Id, fileNames[i]))
                             {
                                 ModelState.AddModelError("", "Something went wrong while saving document/s.");
                                 return StatusCode(500, ModelState);
@@ -186,6 +152,32 @@ namespace StudentEmploymentPortalAPI.Controllers
                 }
             }
             return Ok("No files were submitted to upload");
+        }
+
+        private bool uploadDocument(IFormFile file, Guid applicationId, string DocumentName)
+        {
+            var uploadsPath = Path.Combine(_webHostEnvironment.WebRootPath, "Documents");
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            var filePath = Path.Combine(uploadsPath, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                file.CopyToAsync(stream);
+            }
+
+            var applicationDocument = new ApplicationDocument
+            {
+                StudentApplicationId = applicationId,
+                Name = DocumentName,
+                FilePath = uniqueFileName,
+                UploadDate = DateTime.Now
+            };
+
+            if (!_applicationRepository.AddDocument(applicationDocument))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
