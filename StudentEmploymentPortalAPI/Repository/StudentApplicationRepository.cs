@@ -17,9 +17,25 @@ namespace StudentEmploymentPortalAPI.Repository
         {
             return _context.Applications.ToList();
         }
-        public IQueryable<StudentApplication> GetApplicationsQueryable()
+        public ICollection<StudentApplication> GetApplications(string studentId)
         {
-            return _context.Applications;
+            var applications = _context.Applications.Include(a => a.JobPost).ThenInclude(p => p.WeekHour)
+                .Include(a => a.JobPost).ThenInclude(p => p.JobPostStatus)
+                .Include(a => a.JobPost).ThenInclude(p => p.JobType)
+                .Include(a => a.ApplicationStatus)
+                .Where(a => a.StudentId == studentId).ToList();
+            return applications;
+        }
+
+        public StudentApplication GetApplication(Guid applicationId)
+        {
+            var application = _context.Applications.Include(a => a.JobPost).ThenInclude(p => p.WeekHour)
+                .Include(a => a.JobPost).ThenInclude(p => p.JobPostStatus)
+                .Include(a => a.JobPost).ThenInclude(p => p.JobType)
+                .Include(a => a.ApplicationStatus)
+                .Include(a => a.Documents)
+                .Where(a => a.Id == applicationId).FirstOrDefault();
+            return application;
         }
         public bool CreateApplication(StudentApplication application)
         {

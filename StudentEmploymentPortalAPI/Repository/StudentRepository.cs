@@ -17,15 +17,28 @@ namespace StudentEmploymentPortalAPI.Repository
             _context = context;
         }
 
-        public ICollection<Student> GetStudents()
+        public void Create(string userId, RegisterDto user)
         {
-            return _context.Students.Include("DriversLicense")
-                .Include("Gender")
-                .Include("Race")
-                .Include("Nationality")
-                .Include("YearOfStudy")
-                .Include("Department")
-                .ToList();
+            /*bool isSA = _context.Nationalities.Where(n => n.Id == user.NationalityId).Select(n => n.Name).FirstOrDefault() == "South African";*/
+            var student = new Student
+            {
+                UserId = userId,
+                Address = user.Address,
+                IdNumber = user.IdNumber,
+                DriversLicenseId = user.DriversLicenseId,
+                CareerObjective = user.CareerObjective,
+                GenderId = user.GenderId,
+                RaceId = user.RaceId,
+                NationalityId = user.NationalityId,
+                IsSouthAfrican = user.IsSouthAfrican,
+                YearOfStudyId = user.YearOfStudyId,
+                DepartmentId = user.DepartmentId,
+                Skills = user.Skills,
+                Achievements = user.Achievements,
+                Interests = user.Interests
+            };
+            _context.Students.Add(student);
+            _context.SaveChanges();
         }
 
         public Student GetStudent(string userId)
@@ -37,6 +50,7 @@ namespace StudentEmploymentPortalAPI.Repository
                 .Include("YearOfStudy")
                 .Include("Department")
                 .FirstOrDefault();
+            ;
         }
     }
 }

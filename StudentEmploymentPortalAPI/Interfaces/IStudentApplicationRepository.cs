@@ -7,6 +7,8 @@ namespace StudentEmploymentPortalAPI.Interfaces
     {
         bool CreateApplication(StudentApplication application);
         bool Save();
+        ICollection<StudentApplication> GetApplications(string studentId);
+        StudentApplication GetApplication(Guid applicationId);
         ICollection<StudentApplication> GetApplications();
         bool AddDocument(ApplicationDocument document);
         IQueryable<StudentApplication> GetApplicationsQueryable();

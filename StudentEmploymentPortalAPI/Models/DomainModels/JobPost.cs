@@ -28,8 +28,11 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         public int WeekHourId { get; set; }
         [ValidateNever]
         public WeekHour WeekHour { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime EndDate { get; set; }
+
         public DateTime ClosingDate { get; set; }
         [Precision(18, 2)]
         public decimal HourlyRate { get; set; }

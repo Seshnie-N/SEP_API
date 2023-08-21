@@ -179,5 +179,29 @@ namespace StudentEmploymentPortalAPI.Controllers
             }
             return true;
         }
+
+        [HttpGet("ApplicationHistory")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<ApplicationResponseDto>))]
+        public IActionResult GetApplications()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applications = _applicationRepository.GetApplications(userId);
+            return Ok(_mapper.Map<List<ApplicationResponseDto>>(applications));
+        }
+
+        [HttpGet("{applicationId}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<CompleteApplicationResponseDto>))]
+        public IActionResult GetApplications(Guid applicationId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var application = _applicationRepository.GetApplication(applicationId);
+            if (application.StudentId != userId)
+            {
+                return Unauthorized();
+            } 
+            return Ok(_mapper.Map<CompleteApplicationResponseDto>(application));
+        }
     }
 }

@@ -16,11 +16,11 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         public Guid JobPostId { get; set; }
         [ValidateNever]
         public JobPost JobPost { get; set; }
-
+        [ForeignKey(nameof(ApplicationStatus))]
         public int? ApplicationStatusId { get; set; }
         [ValidateNever]
         public ApplicationStatus? ApplicationStatus { get; set; }
         [ValidateNever]
-        public ICollection<ApplicationDocument> Documents { get; set; }
+        public ICollection<ApplicationDocument>? Documents { get; set; }
     }
 }

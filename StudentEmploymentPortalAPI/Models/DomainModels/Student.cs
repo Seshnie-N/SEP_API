@@ -28,7 +28,7 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         [ValidateNever]
         public Race? Race { set; get; }
         public bool IsSouthAfrican { get; set; }
-        public int NationalityId { get; set; }
+        public int? NationalityId { get; set; }
         [ValidateNever]
         public Nationality? Nationality { set; get; }
         public int YearOfStudyId { get; set; }
@@ -38,12 +38,12 @@ namespace StudentEmploymentPortalAPI.Models.DomainModels
         [ValidateNever]
         public Department? Department { set; get; }
         public string? Skills { set; get; }
-        public string? Achivements { set; get; }
+        public string? Achievements { set; get; }
         public string? Interests { set; get; }
-        public ICollection<Experience> Experiences { set; get; }
-        public ICollection<Qualification> Qualifications { set; get; }
-        public ICollection<Referee> Referees { set; get;}
-        public ICollection<StudentApplication> StudentApplications { set; get; }
+        public ICollection<Experience>? Experiences { set; get; }
+        public ICollection<Qualification>? Qualifications { set; get; }
+        public ICollection<Referee>? Referees { set; get;}
+        public ICollection<StudentApplication>? StudentApplications { set; get; }
 
     }
 }
