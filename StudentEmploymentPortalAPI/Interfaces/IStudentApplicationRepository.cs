@@ -12,6 +12,5 @@ namespace StudentEmploymentPortalAPI.Interfaces
         ICollection<StudentApplication> GetApplications();
         bool AddDocument(ApplicationDocument document);
         IQueryable<StudentApplication> GetApplicationsQueryable();
-        //StudentApplication GetCategory(int id);
     }
 }
