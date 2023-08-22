@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using StudentEmploymentPortalAPI.Dto;
+using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -15,38 +13,40 @@ namespace StudentEmploymentPortalAPI.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _config;
+        private readonly IStudentRepository _studentRepository;
 
-        public AuthService(UserManager<ApplicationUser> userManager,IConfiguration config)
+        public AuthService(UserManager<ApplicationUser> userManager,IConfiguration config, IStudentRepository studentRepository)
         {
             _userManager = userManager;
             _config = config;
+            _studentRepository = studentRepository;
         }
 
-        public async Task<bool> Register(RegisterDto user)
+        public async Task<IdentityResult> Register(RegisterDto user)
         {
             var applicationUser = new ApplicationUser
             {
                 UserName = user.Email,
                 Email = user.Email,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
             };
             var result = await _userManager.CreateAsync(applicationUser, user.Password);
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(applicationUser, "User");
-                return true;
+                _studentRepository.Create(await _userManager.GetUserIdAsync(applicationUser), user);
             }
-            return false;
+            return result;
         }
 
         public async Task<bool> Login(LoginDto user)
         {
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             if (applicationUser == null)
-            {
                 return false;
-            }
+        
             return await _userManager.CheckPasswordAsync(applicationUser, user.Password);
         }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using SEP.Data;
 using StudentEmploymentPortalAPI.Data;
 using StudentEmploymentPortalAPI.Interfaces;
@@ -24,9 +25,11 @@ namespace StudentEmploymentPortalAPI
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;//cycles will just show null
+                options.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverter("yyyy-MM-dd"));
             }); ;
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IStudentApplicationRepository, StudentApplicationRepository>();
             builder.Services.AddScoped<IJobPostRepository, JobPostRepository>();
             builder.Services.AddScoped<ILookupRepository, LookupRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
@@ -71,11 +74,21 @@ namespace StudentEmploymentPortalAPI
                 };
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(option =>
             {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "SEP API", Version = "v1" });
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
@@ -106,6 +119,8 @@ namespace StudentEmploymentPortalAPI
             //Seed Data
             if (args.Length == 1 && args[0].ToLower() == "seeddata")
                 await app.SeedDataAsync();
+
+            app.UseCors(); // Add this line to enable CORS
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

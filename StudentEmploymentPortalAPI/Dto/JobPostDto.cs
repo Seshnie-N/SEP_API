@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 using StudentEmploymentPortalAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentEmploymentPortalAPI.Dto
 {
@@ -14,8 +15,11 @@ namespace StudentEmploymentPortalAPI.Dto
         public string KeyResponsibilities { get; set; }
         public string JobType { get; set; }
         public string WeekHour { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime EndDate { get; set; }
+
         public DateTime ClosingDate { get; set; }
         [Precision(18, 2)]
         public decimal HourlyRate { get; set; }

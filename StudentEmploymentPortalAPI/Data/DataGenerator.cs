@@ -1,7 +1,10 @@
-﻿using Bogus;
+﻿using AutoMapper;
+using Bogus;
 using StudentEmploymentPortalAPI.Data;
+using StudentEmploymentPortalAPI.Dto;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
+using StudentEmploymentPortalAPI.Services;
 
 namespace SEP.Data
 {
@@ -9,12 +12,14 @@ namespace SEP.Data
     {
         private readonly DataContext _context;
         private readonly ILookupRepository _lookupRepository;
+        private readonly IAuthService _authService;
 
-        public DataGenerator(DataContext context, ILookupRepository lookupRepository) 
+        public DataGenerator(DataContext context, ILookupRepository lookupRepository, IAuthService authService) 
         {
             Randomizer.Seed = new Random(1969);
             _context = context;
             _lookupRepository = lookupRepository;
+            _authService = authService;
         }
         
         private Faker<Employer> GetEmployerGenerator()
@@ -81,8 +86,37 @@ namespace SEP.Data
                 .RuleFor(p => p.LimitedToFaculty, f => f.Random.Bool());
         }
 
-        private List<Employer> fakeEmployers = new List<Employer>();
-        private List<JobPost> fakeJobPosts = new List<JobPost>();
+        private Faker<RegisterDto> GetStudentGenerator()
+        {
+            var deps = _lookupRepository.GetDepartmentWithFaculty();
+            var driversLicense = _context.DriversLicenses.ToList();
+            var gender = _context.Genders.ToList();
+            var race = _context.Races.ToList();
+            var nationality = _context.Nationalities.ToList();
+            var yearOfStudy = _context.YearOfStudy.ToList();
+            return new Faker<RegisterDto>()
+                .RuleFor(s => s.FirstName, f => f.Name.FirstName())
+                .RuleFor(s => s.LastName, f => f.Name.LastName())
+                .RuleFor(s => s.Email, (f,s) => f.Internet.Email(s.FirstName))
+                .RuleFor(s => s.Password, (f,s) => f.Internet.Email(s.FirstName) + "A1!")
+                .RuleFor(s => s.PhoneNumber, f => f.Phone.PhoneNumber("0#########"))
+                .RuleFor(s => s.IdNumber, f => f.Random.String2(13, "012345689"))
+                .RuleFor(s => s.Address, f => f.Address.FullAddress())
+                .RuleFor(s => s.CareerObjective, f => f.Company.Bs())
+                .RuleFor(s => s.Skills, f => f.Lorem.Lines(5, "|"))
+                .RuleFor(s => s.Achievements, f => f.Lorem.Lines(3, "|"))
+                .RuleFor(s => s.Interests, f => f.Lorem.Lines(4, "|"))
+                .RuleFor(p => p.DepartmentId, f => f.PickRandom(deps).Id)
+                .RuleFor(p => p.DriversLicenseId, f => f.PickRandom(driversLicense).Id)
+                .RuleFor(p => p.GenderId, f => f.PickRandom(gender).Id)
+                .RuleFor(p => p.RaceId, f => f.PickRandom(race).Id)
+                .RuleFor(p => p.NationalityId, f => f.PickRandom(nationality).Id)
+                .RuleFor(p => p.YearOfStudyId, f => f.PickRandom(yearOfStudy).Id);
+        }
+
+        private List<Employer> fakeEmployers = new();
+        private List<JobPost> fakeJobPosts = new();
+        public List<RegisterDto> fakeStudents = new();
 
         private List<JobPost> GetJobPosts(Guid empId)
         {
@@ -92,26 +126,26 @@ namespace SEP.Data
             return posts;
         }
 
-        public void GenerateFakerData()
+        public async void GenerateFakerData()
         {
+            //employers and job posts
             var empGen = GetEmployerGenerator();
             var employers = empGen.Generate(10);
             fakeEmployers.AddRange(employers);
 
             foreach (var emp in fakeEmployers)
-            {
                 if (!_context.Employers.Any(e => e.Id == emp.Id))
-                {
                     _context.Employers.Add(emp);
-                }
-            }
+
             foreach (var post in fakeJobPosts)
-            {
                 if (!_context.JobPosts.Any(p => p.Id == post.Id))
-                {
                     _context.JobPosts.Add(post);
-                }
-            }
+
+            //students
+            var studentGen = GetStudentGenerator();
+            var students = studentGen.Generate(20);
+            fakeStudents.AddRange(students);
+            
 
             _context.SaveChanges();
         }

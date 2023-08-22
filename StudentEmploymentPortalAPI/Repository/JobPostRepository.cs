@@ -22,7 +22,6 @@ namespace StudentEmploymentPortalAPI.Repository
         }
         public async Task<ICollection<JobPost>> GetJobPostsAsync(string userId)
         {
-            //var user = await _userManager.FindByIdAsync(userId);
             var student = _studentRepository.GetStudent(userId);
             var predicate = PredicateBuilder.New<JobPost>();
             predicate = predicate.And(p => p.IsApproved);
@@ -69,6 +68,7 @@ namespace StudentEmploymentPortalAPI.Repository
                 .Include(p => p.WeekHour)
                 .Include(p => p.JobPostStatus)
                 .ToList();
+
             //filter out job posts that have already been applied to
             var postsAppliedToIds = _context.Applications.Where(a => a.StudentId == student.UserId).Select(a => a.JobPostId);
 
@@ -76,7 +76,6 @@ namespace StudentEmploymentPortalAPI.Repository
                 .Include(p => p.Applications)
                 .Include(p => p.WeekHour)
                 .Include(p => p.JobPostStatus)
-                .Include(p => p.Employer)
                 .ToList();
             posts = posts.Where(p => !postsAppliedToIds.Contains(p.Id)).ToList();
 

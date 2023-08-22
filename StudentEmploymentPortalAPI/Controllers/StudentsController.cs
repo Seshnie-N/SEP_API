@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StudentEmploymentPortalAPI.Interfaces;
 using StudentEmploymentPortalAPI.Models.DomainModels;
+using System.Security.Claims;
 
 namespace StudentEmploymentPortalAPI.Controllers
 {
@@ -19,14 +20,14 @@ namespace StudentEmploymentPortalAPI.Controllers
 
         //GET: api/Students/
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Student>))]
-        public IActionResult Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Student> Get()
         {
-            var students = _studentRepository.GetStudents();
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var student = _studentRepository.GetStudent(userId);
              
-            return Ok(students);
+            return student == null ? NotFound() : student;
         }
     }
 }

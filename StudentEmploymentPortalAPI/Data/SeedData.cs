@@ -2,6 +2,7 @@
 using StudentEmploymentPortalAPI.Data;
 using StudentEmploymentPortalAPI.Models;
 using StudentEmploymentPortalAPI.Models.DomainModels;
+using StudentEmploymentPortalAPI.Services;
 
 namespace SEP.Data
 {
@@ -475,7 +476,7 @@ namespace SEP.Data
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                 };
-                var result = await userManager.CreateAsync(user, "Pa$$w)ord1.");
+                var result = await userManager.CreateAsync(user, "password123");
                 if (result.Succeeded)
                 {
                     userManager.AddToRoleAsync(user, "User").Wait();
@@ -490,11 +491,11 @@ namespace SEP.Data
                         GenderId = 1,
                         RaceId = 2,
                         NationalityId = 3,
-                        IsSouthAfrican = true,
+                        IsSouthAfrican = false,
                         YearOfStudyId = 1,
                         DepartmentId = 5,
                         Skills = "C#, Java, HTML, CSS",
-                        Achivements = "Won coding competition 2022",
+                        Achievements = "Won coding competition 2022",
                         Interests = "Reading, Swimming, Gaming",
                     };
                     var experiences = new List<Experience>
@@ -547,6 +548,44 @@ namespace SEP.Data
             //Faker data
             var dataGenerator = scope.ServiceProvider.GetRequiredService<DataGenerator>();
             dataGenerator.GenerateFakerData();
+
+            var fakeStudents = dataGenerator.fakeStudents;
+            foreach (var user in fakeStudents)
+            {
+                var applicationUser = new ApplicationUser
+                {
+                    UserName = user.Email,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                };
+                var result = await userManager.CreateAsync(applicationUser, user.Password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(applicationUser, "User");
+                    var userId = await userManager.GetUserIdAsync(applicationUser);
+                    var student = new Student
+                    {
+                        UserId = userId,
+                        Address = user.Address,
+                        IdNumber = user.IdNumber,
+                        DriversLicenseId = user.DriversLicenseId,
+                        CareerObjective = user.CareerObjective,
+                        GenderId = user.GenderId,
+                        RaceId = user.RaceId,
+                        NationalityId = user.NationalityId,
+                        IsSouthAfrican = user.IsSouthAfrican,
+                        YearOfStudyId = user.YearOfStudyId,
+                        DepartmentId = user.DepartmentId,
+                        Skills = user.Skills,
+                        Achievements = user.Achievements,
+                        Interests = user.Interests
+                    };
+                    context.Students.Add(student);
+                    context.SaveChanges();
+                }
+            }
 
             return app;
         }
